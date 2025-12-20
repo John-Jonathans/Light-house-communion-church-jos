@@ -1,17 +1,13 @@
 backend:
   name: github
-  # Your specific repository
   repo: John-Jonathans/Light-house-communion-church-jos
   branch: main
-  # This connects to the "Middleman" keys we set up in Vercel
-    base_url: https://light-house-communion-church-kjr2bemug-john-jonathans-projects.vercel.app
+  base_url: https://light-house-communion-church-kjr2bemug-john-jonathans-projects.vercel.app
   auth_endpoint: api/auth
 
-# Where to save images uploaded via the CMS
 media_folder: "images"
 public_folder: "images"
 
-# The content you want to edit
 collections:
   - name: "books"
     label: "Books"
@@ -24,4 +20,4 @@ collections:
       - {label: "Description", name: "description", widget: "text"}
       - {label: "Cover Image", name: "cover", widget: "image"}
       - {label: "Link to Buy", name: "link", widget: "string", required: false}
-      
+
