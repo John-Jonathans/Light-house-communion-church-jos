@@ -53,7 +53,6 @@
             const navLinks = [
                 { name: 'Home', href: 'index.html' },
                 { name: 'The Bishop', href: 'leadership.html' },
-                /* FIXED LINK: Changed resources.html to books.html */
                 { name: 'Books', href: 'books.html' },
                 { name: 'Events', href: 'events.html' },
             ];
@@ -141,7 +140,8 @@
                             key={index}
                             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
                         >
-                            <img src={img} alt={`Slide ${index}`} className="w-full h-full object-cover object-top" />
+                            {/* FIX: Changed object-cover to object-contain */}
+                            <img src={img} alt={`Slide ${index}`} className="w-full h-full object-contain bg-black" />
                         </div>
                     ))}
                     
@@ -211,7 +211,6 @@
                                 </p>
                                 
                                 <div className="block md:hidden mt-8 pt-8 border-t border-gray-200">
-                                    {/* FIXED LINK: Changed resources.html to books.html */}
                                     <a href="books.html" className="block w-full text-center bg-church-dark text-white py-3 rounded-lg font-bold">
                                         Read Bishop's Books
                                     </a>
@@ -242,7 +241,6 @@
                                 <ul className="space-y-3">
                                     <li><a href="index.html" className="text-gray-400 hover:text-white transition">Home</a></li>
                                     <li><a href="leadership.html" className="text-gray-400 hover:text-white transition">The Bishop</a></li>
-                                    {/* FIXED LINK */}
                                     <li><a href="books.html" className="text-gray-400 hover:text-white transition">Books</a></li>
                                     <li><a href="events.html" className="text-gray-400 hover:text-white transition">Events</a></li>
                                 </ul>
@@ -272,3 +270,4 @@
     </script>
 </body>
 </html>
+
