@@ -2,9 +2,10 @@ backend:
   name: github
   repo: John-Jonathans/Light-house-communion-church-jos
   branch: main
-  # LOOK HERE: The slash (/) at the end is the Key to fixing the Google bug:
-  base_url: https://light-house-communion-church-jos.vercel.app/
-  auth_endpoint: api/auth
+  # I added QUOTES around the link to trap any invisible spaces:
+  base_url: "https://light-house-communion-church-jos.vercel.app"
+  auth_endpoint: "api/auth"
+
 
 media_folder: "images"
 public_folder: "images"
