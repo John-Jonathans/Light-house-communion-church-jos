@@ -3,15 +3,40 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel</title>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js?v=999"></script>
+    <title>Admin Debugger</title>
+
+    <style>
+      #debug-log { 
+        font-family: monospace; 
+        color: red; 
+        background: #eee; 
+        padding: 20px; 
+        margin: 20px; 
+        border: 2px solid red;
+        word-wrap: break-word;
+      }
+    </style>
   </head>
   <body>
-    <div style="text-align:center; margin-top:50px; font-family:sans-serif;">
-        <h2 style="color:#333;">System Ready.</h2>
-        <p>If the Login button does not appear below in 10 seconds:</p>
-        <p>1. Tap the 3 Dots (Menu)<br>2. Select "Desktop Site"</p>
-    </div>
+    <h1 style="text-align:center">Admin Debug Mode</h1>
+    
+    <div id="debug-log">Waiting for errors...</div>
+
+    <script>
+      window.onerror = function(msg, url, line, col, error) {
+        var log = document.getElementById('debug-log');
+        log.innerHTML += "<p><strong>CRASH REPORT:</strong><br>" + msg + "<br>Line: " + line + "</p>";
+        return false;
+      };
+      
+      // Also catch "Network" errors
+      window.addEventListener('unhandledrejection', function(event) {
+        var log = document.getElementById('debug-log');
+        log.innerHTML += "<p><strong>NETWORK ERROR:</strong><br>" + event.reason + "</p>";
+      });
+    </script>
+
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
 
