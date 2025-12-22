@@ -1,9 +1,8 @@
-import fetch from 'node-fetch';
-
+// We removed the import line because Vercel has built-in fetch now
 export default async function handler(req, res) {
   const client_id = process.env.OAUTH_CLIENT_ID;
   const client_secret = process.env.OAUTH_CLIENT_SECRET;
-  const { code } = req.query; // The code GitHub gave us
+  const { code } = req.query; 
 
   if (!code) {
     return res.status(400).send('No code provided');
@@ -25,21 +24,14 @@ export default async function handler(req, res) {
     return res.status(401).send(data.error_description);
   }
 
-  // Send the token back to the Admin page
   const token = data.access_token;
   const provider = 'github';
-
-  // Use the exact same host that requested the login
   const { host } = req.headers;
-
-  // This script closes the popup and saves the token
+  
   const script = `
     <script>
       (function() {
         function receiveMessage(e) {
-          console.log("receiveMessage %o", e);
-
-          // Send the token to the main window
           window.opener.postMessage(
             'authorization:${provider}:success:${JSON.stringify({
               token: '${token}',
@@ -49,8 +41,6 @@ export default async function handler(req, res) {
           );
         }
         window.addEventListener("message", receiveMessage, false);
-
-        // Send the message immediately in case the listener is already ready
         window.opener.postMessage(
           'authorization:${provider}:success:${JSON.stringify({
             token: '${token}',
