@@ -4,10 +4,9 @@ export default async function handler(req, res) {
   const { code } = req.query;
 
   if (!code) {
-    return res.status(400).send('Error: No code provided. Please try again.');
+    return res.status(400).send('Error: No code provided.');
   }
 
-  // 1. Get the Token from GitHub
   try {
     const response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -19,15 +18,14 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-
+    
     if (data.error) {
       return res.status(401).send('GitHub Error: ' + data.error_description);
     }
 
-    // 2. Prepare the Success Message (Visible HTML)
     const token = data.access_token;
     const provider = 'github';
-    
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -35,18 +33,21 @@ export default async function handler(req, res) {
         <title>Login Success</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-          body { font-family: sans-serif; text-align: center; padding: 40px; background-color: #f0fdf4; }
-          .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-          h1 { color: #166534; font-size: 24px; margin-bottom: 10px; }
-          p { color: #4b5563; margin-bottom: 20px; }
-          .btn { background: #166534; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f0fdf4; }
+          .card { background: white; padding: 20px; border-radius: 10px; border: 2px solid #166534; }
+          h1 { color: #166534; margin: 0; }
+          .pulse { animation: pulse 1s infinite; color: red; font-weight: bold; margin-top: 15px; }
+          @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         </style>
       </head>
       <body>
         <div class="card">
           <h1>✅ Login Successful!</h1>
-          <p>We have received your key.</p>
-          <p id="status">Sending signal to Admin Panel...</p>
+          <p>We have your key.</p>
+          <div class="pulse">📡 BROADCASTING SIGNAL...</div>
+          <br/>
+          <p><strong>DO NOT CLOSE THIS WINDOW YET.</strong></p>
+          <p>Tap the "Tabs" button on your phone and switch back to the <strong>Admin Page</strong> now.</p>
         </div>
 
         <script>
@@ -55,18 +56,15 @@ export default async function handler(req, res) {
           const msg = JSON.stringify({ token, provider });
           const fullMsg = "authorization:" + provider + ":success:" + msg;
 
-          // Send the signal to the Main Window (Admin Panel)
-          if (window.opener) {
-            window.opener.postMessage(fullMsg, "*");
-            document.getElementById('status').innerText = "Signal Sent! You can close this window.";
-            
-            // Try to close automatically after 1 second
-            setTimeout(() => {
-              window.close();
-            }, 1500);
-          } else {
-             document.getElementById('status').innerText = "⚠️ Could not find the Admin Tab. Please switch tabs manually.";
+          function sendSignal() {
+            if (window.opener) {
+              window.opener.postMessage(fullMsg, "*");
+              console.log("Signal sent");
+            }
           }
+
+          // Send the signal every 500ms (keep trying until the user switches tabs)
+          setInterval(sendSignal, 500);
         </script>
       </body>
       </html>
