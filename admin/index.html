@@ -3,40 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Debugger</title>
-
-    <style>
-      #debug-log { 
-        font-family: monospace; 
-        color: red; 
-        background: #eee; 
-        padding: 20px; 
-        margin: 20px; 
-        border: 2px solid red;
-        word-wrap: break-word;
-      }
-    </style>
+    <title>Admin Access</title>
   </head>
   <body>
-    <h1 style="text-align:center">Admin Debug Mode</h1>
-    
-    <div id="debug-log">Waiting for errors...</div>
+    <div id="status" style="text-align:center; margin-top:50px; font-family:sans-serif;">
+        <h1 style="color: black;">System Loading...</h1>
+        <p style="color: gray;">Please wait. Do not refresh.</p>
+        <button onclick="window.location.reload()" style="padding:10px; margin-top:20px;">
+           Stuck? Click to Reload
+        </button>
+    </div>
 
     <script>
-      window.onerror = function(msg, url, line, col, error) {
-        var log = document.getElementById('debug-log');
-        log.innerHTML += "<p><strong>CRASH REPORT:</strong><br>" + msg + "<br>Line: " + line + "</p>";
-        return false;
+      window.onerror = function(msg, url, line) {
+        document.getElementById('status').innerHTML = 
+          "<h2 style='color:red'>⚠️ Error Detected</h2><p>" + msg + "</p>";
       };
-      
-      // Also catch "Network" errors
-      window.addEventListener('unhandledrejection', function(event) {
-        var log = document.getElementById('debug-log');
-        log.innerHTML += "<p><strong>NETWORK ERROR:</strong><br>" + event.reason + "</p>";
-      });
     </script>
 
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
-
