@@ -3,22 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Access</title>
+    <title>Content Manager</title>
   </head>
   <body>
     <div id="status" style="text-align:center; margin-top:50px; font-family:sans-serif;">
-        <h1 style="color: black;">System Loading...</h1>
-        <p style="color: gray;">Please wait. Do not refresh.</p>
-        <button onclick="window.location.reload()" style="padding:10px; margin-top:20px;">
-           Stuck? Click to Reload
-        </button>
+        <h2 style="color: #333;">Admin Panel</h2>
+        <p>Loading System...</p>
     </div>
 
     <script>
-      window.onerror = function(msg, url, line) {
-        document.getElementById('status').innerHTML = 
-          "<h2 style='color:red'>⚠️ Error Detected</h2><p>" + msg + "</p>";
-      };
+      // Check the mailbox every 0.5 seconds
+      setInterval(() => {
+        const tokenMsg = localStorage.getItem("cms_auth_token");
+        
+        if (tokenMsg) {
+          console.log("Found token in mailbox!");
+          // Send the message to OURSELVES so Decap CMS can hear it
+          window.postMessage(tokenMsg, "*");
+          
+          // Clear the mailbox so we don't login twice
+          localStorage.removeItem("cms_auth_token");
+        }
+      }, 500);
     </script>
 
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
