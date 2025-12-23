@@ -18,53 +18,30 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    
-    if (data.error) {
-      return res.status(401).send('GitHub Error: ' + data.error_description);
-    }
-
     const token = data.access_token;
     const provider = 'github';
+    
+    // Create the message string that Decap CMS expects
+    const msg = JSON.stringify({ token, provider });
+    const fullMsg = "authorization:" + provider + ":success:" + msg;
 
     const html = `
       <!DOCTYPE html>
       <html>
-      <head>
-        <title>Login Success</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-          body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f0fdf4; }
-          .card { background: white; padding: 20px; border-radius: 10px; border: 2px solid #166534; }
-          h1 { color: #166534; margin: 0; }
-          .pulse { animation: pulse 1s infinite; color: red; font-weight: bold; margin-top: 15px; }
-          @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        </style>
-      </head>
       <body>
-        <div class="card">
-          <h1>✅ Login Successful!</h1>
-          <p>We have your key.</p>
-          <div class="pulse">📡 BROADCASTING SIGNAL...</div>
-          <br/>
-          <p><strong>DO NOT CLOSE THIS WINDOW YET.</strong></p>
-          <p>Tap the "Tabs" button on your phone and switch back to the <strong>Admin Page</strong> now.</p>
-        </div>
-
         <script>
-          const token = "${token}";
-          const provider = "${provider}";
-          const msg = JSON.stringify({ token, provider });
-          const fullMsg = "authorization:" + provider + ":success:" + msg;
+          // 1. Save the key to the "Mailbox" (LocalStorage)
+          // This works even if the tabs are disconnected!
+          localStorage.setItem("cms_auth_token", "${fullMsg}");
 
-          function sendSignal() {
-            if (window.opener) {
-              window.opener.postMessage(fullMsg, "*");
-              console.log("Signal sent");
-            }
+          // 2. Also try the old way (PostMessage) just in case
+          if (window.opener) {
+            window.opener.postMessage("${fullMsg}", "*");
           }
-
-          // Send the signal every 500ms (keep trying until the user switches tabs)
-          setInterval(sendSignal, 500);
+          
+          // 3. Close this window immediately
+          document.write("<h1 style='color:green; text-align:center; margin-top:50px;'>Login Saved! Closing...</h1>");
+          setTimeout(() => { window.close(); }, 1000);
         </script>
       </body>
       </html>
