@@ -5,50 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
     <style>
-      /* Force the page to be visible immediately */
       body { background-color: #f3f4f6; font-family: sans-serif; margin: 0; padding: 20px; }
       #status { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 50px; }
       h1 { color: #1f2937; margin-bottom: 10px; }
       p { color: #6b7280; }
-      button { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+      .success { color: #166534; font-weight: bold; background: #dcfce7; padding: 10px; border-radius: 5px; display: inline-block; margin-top: 10px;}
     </style>
   </head>
   <body>
     <div id="status">
         <h1>⚙️ Admin Panel</h1>
-        <p>Checking security mailbox...</p>
+        <p>Waiting for login...</p>
         <div id="msg"></div>
-        
-        <div id="manual-login" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
-           <p>Automatic login slow?</p>
-           <button onclick="window.location.reload()">Refresh Page</button>
-        </div>
     </div>
 
     <script>
-      // Show the manual button after 5 seconds if nothing happens
-      setTimeout(() => {
-        document.getElementById('manual-login').style.display = 'block';
-      }, 5000);
-
-      // Check the mailbox for the key
-      function checkMailbox() {
+      // Function to shout the password
+      function broadcastToken() {
         const tokenMsg = localStorage.getItem("cms_auth_token");
+        
         if (tokenMsg) {
-          document.getElementById('msg').innerHTML = "<strong style='color:green'>✅ Key Found! Logging in...</strong>";
+          // Update the screen
+          const msgDiv = document.getElementById('msg');
+          msgDiv.innerHTML = "<div class='success'>✅ Key Found! Retrying connection...</div>";
           
-          // Send the key to Decap CMS
+          // Send the signal repeatedly (every 2 seconds)
+          // We DO NOT delete the key immediately anymore.
+          console.log("Sending token to CMS...");
           window.postMessage(tokenMsg, "*");
-          
-          // Clean up
-          localStorage.removeItem("cms_auth_token");
         }
       }
 
-      // Check every 0.5 seconds
-      setInterval(checkMailbox, 500);
+      // Check and Broadcast every 1 second
+      setInterval(broadcastToken, 1000);
     </script>
 
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
+
