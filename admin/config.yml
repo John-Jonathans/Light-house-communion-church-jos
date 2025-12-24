@@ -2,23 +2,20 @@ backend:
   name: github
   repo: John-Jonathans/Light-house-communion-church-jos
   branch: main
-  # I added the SLASH (/) inside the quotes. This is the fix.
-  base_url: "https://light-house-communion-church-jos.vercel.app/"
-  auth_endpoint: "api/auth"
+  base_url: https://light-house-communion-church-jos.vercel.app
+  auth_endpoint: api/callback
 
-
-media_folder: "images"
-public_folder: "images"
+media_folder: "assets/images"
+public_folder: "/assets/images"
 
 collections:
-  - name: "books"
-    label: "Books"
-    folder: "books"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Description", name: "description", widget: "text"}
-      - {label: "Cover Image", name: "cover", widget: "image"}
-      - {label: "Link to Buy", name: "link", widget: "string", required: false}
+  - name: "pages"
+    label: "Website Pages"
+    files:
+      - file: "index.html"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - {label: "Main Title", name: "title", widget: "string"}
+          - {label: "Welcome Text", name: "intro", widget: "text"}
+
