@@ -3,59 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Diagnostic</title>
-    <style>
-      body { background-color: #1f2937; color: white; font-family: monospace; padding: 20px; }
-      #console { background: black; border: 1px solid #4b5563; padding: 15px; border-radius: 8px; min-height: 200px; white-space: pre-wrap; font-size: 14px; }
-      .log { color: #9ca3af; border-bottom: 1px solid #374151; padding: 5px 0; }
-      .error { color: #f87171; font-weight: bold; }
-      .success { color: #34d399; font-weight: bold; }
-      h1 { color: white; font-family: sans-serif; }
-    </style>
+    <title>Admin Panel</title>
   </head>
   <body>
-    <h1>🛠️ System Diagnostic</h1>
-    <p>We are checking why the engine is stuck...</p>
-    <div id="console">Initializing logs...<br></div>
-
     <script>
-      // 1. LOGGING TOOL (To see what is happening)
-      function log(msg, type = "log") {
-        const div = document.getElementById('console');
-        const line = document.createElement('div');
-        line.className = "log " + type;
-        line.innerText = "> " + msg;
-        div.appendChild(line);
+      // Check for the key in the "Mailbox"
+      const tokenMsg = localStorage.getItem("cms_auth_token");
+      if (tokenMsg) {
+        // Send it to the CMS
+        window.postMessage(tokenMsg, "*");
       }
-
-      window.onerror = function(msg, url, line) {
-        log("CRASH: " + msg, "error");
-        return false;
-      };
-
-      // 2. CHECK FOR CONFIG FILE
-      log("Checking for 'config.yml' file...");
-      fetch('config.yml')
-        .then(response => {
-          if (response.status === 200) {
-            log("✅ config.yml FOUND.", "success");
-            log("Starting CMS Engine...");
-          } else {
-            log("❌ ERROR: 'config.yml' is MISSING (404).", "error");
-            log("The CMS cannot start without this file.", "error");
-          }
-        })
-        .catch(err => log("Network Error: " + err.message, "error"));
-
-      // 3. CHECK MAILBOX FOR KEY
-      setInterval(() => {
-        const tokenMsg = localStorage.getItem("cms_auth_token");
-        if (tokenMsg) {
-          log("✅ Login Key found in mailbox.", "success");
-          // Send it to the CMS
-          window.postMessage(tokenMsg, "*");
-        }
-      }, 2000);
     </script>
 
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
