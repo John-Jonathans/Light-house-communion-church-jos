@@ -7,11 +7,23 @@
   </head>
   <body>
     <script>
-      // Check for the key in the "Mailbox"
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+
+      if (code) {
+        document.write("<h1 style='font-family:sans-serif; text-align:center; margin-top:50px;'>🔄 Completing Login...</h1><p style='text-align:center;'>Redirecting to verification...</p>");
+        // Forward the code to the traffic cop manually
+        window.location.href = "/api/callback?code=" + code;
+      }
+    </script>
+
+    <script>
       const tokenMsg = localStorage.getItem("cms_auth_token");
       if (tokenMsg) {
-        // Send it to the CMS
-        window.postMessage(tokenMsg, "*");
+        // If we have a key, give it to the dashboard
+        setTimeout(() => {
+           window.postMessage(tokenMsg, "*");
+        }, 500);
       }
     </script>
 
