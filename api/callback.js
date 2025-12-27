@@ -1,17 +1,31 @@
 export default async function handler(req, res) {
+  // 1. Get the Keys
   const client_id = process.env.OAUTH_CLIENT_ID;
   const client_secret = process.env.OAUTH_CLIENT_SECRET;
+  
+  // 2. Check if we have a "Ticket" (code) from GitHub
   const { code } = req.query;
 
-  // If the keys are missing on Vercel, tell the user immediately
-  if (!client_id || !client_secret) {
-    return res.status(500).send("❌ Error: Missing Vercel Environment Variables (OAUTH_CLIENT_ID or SECRET).");
-  }
-
+  // ============================================================
+  // PHASE 1: THE START (Traffic Cop)
+  // If there is no code, it means the user just clicked the button.
+  // We must send them to GitHub to get authorization.
+  // ============================================================
   if (!code) {
-    return res.status(400).send('❌ Error: No code provided from GitHub.');
+    if (!client_id) {
+       return res.status(500).send("❌ System Error: Vercel is missing the OAUTH_CLIENT_ID.");
+    }
+    
+    // Redirect the user to GitHub's login page
+    const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=repo,user`;
+    return res.redirect(redirectUrl);
   }
 
+  // ============================================================
+  // PHASE 2: THE FINISH (Login Success)
+  // If we DO have a code, it means the user is back from GitHub.
+  // Now we exchange the code for a key.
+  // ============================================================
   try {
     const response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -24,12 +38,15 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
+    // Check if GitHub rejected the code
     if (data.error) {
-      return res.status(401).send('GitHub Error: ' + data.error_description);
+      return res.status(401).send('GitHub Ticket Error: ' + data.error_description);
     }
 
     const token = data.access_token;
     const provider = 'github';
+    
+    // Create the message for the Admin Panel
     const msg = JSON.stringify({ token, provider });
     const fullMsg = "authorization:" + provider + ":success:" + msg;
 
@@ -38,50 +55,23 @@ export default async function handler(req, res) {
       <html>
       <head>
         <title>Login Verified</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-          body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f0fdf4; }
-          .card { background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; }
-          h1 { color: #166534; margin: 0 0 10px 0; }
-          p { color: #555; }
-          .warn { color: #d97706; font-size: 0.9em; margin-top: 20px; }
-        </style>
+        <script>
+          // 1. Put the key in the mailbox (storage)
+          localStorage.setItem("cms_auth_token", '${fullMsg}');
+          
+          // 2. Send the signal (if window is connected)
+          if (window.opener) {
+            window.opener.postMessage('${fullMsg}', "*");
+          }
+
+          // 3. Close the window
+          window.close();
+        </script>
+        <style>body{font-family:sans-serif;text-align:center;padding:50px;color:#166534;background:#dcfce7;}</style>
       </head>
       <body>
-        <div class="card">
-          <h1>✅ Login Verified!</h1>
-          <p>We have received your security key.</p>
-          <p>Sending it to the Admin Panel now...</p>
-          
-          <p class="warn">If this window does not close automatically, please <strong>close it manually</strong> and return to the Admin tab.</p>
-        </div>
-
-        <script>
-          // We wrap this in a "Try/Catch" block so the page never crashes
-          try {
-            const message = '${fullMsg}';
-            
-            // 1. Try to save to Mailbox (LocalStorage)
-            try {
-              localStorage.setItem("cms_auth_token", message);
-            } catch (e) {
-              console.log("Mailbox blocked by browser settings.");
-            }
-
-            // 2. Try to send Direct Signal
-            if (window.opener) {
-              window.opener.postMessage(message, "*");
-            }
-            
-            // 3. Close window after 2 seconds
-            setTimeout(() => {
-              window.close();
-            }, 2000);
-
-          } catch (err) {
-            console.error("Script Error:", err);
-          }
-        </script>
+        <h1>✅ Login Successful!</h1>
+        <p>Closing window...</p>
       </body>
       </html>
     `;
@@ -93,3 +83,4 @@ export default async function handler(req, res) {
     res.status(500).send('Server Error: ' + err.message);
   }
 }
+
