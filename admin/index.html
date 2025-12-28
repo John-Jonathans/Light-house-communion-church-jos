@@ -5,38 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
     <style>
-      #auto-login-msg {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(255,255,255,0.95); z-index: 9999;
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-        font-family: sans-serif; text-align: center;
-      }
-      .hidden { display: none !important; }
-      h2 { color: #166534; }
+      body { font-family: sans-serif; text-align: center; padding: 20px; }
+      #status { margin-top: 50px; padding: 20px; background: #f0fdf4; border: 1px solid #166534; color: #166534; display: none; }
     </style>
   </head>
   <body>
-    <div id="auto-login-msg" class="hidden">
-        <h2>🔐 Key Found!</h2>
-        <p>Attempting to start engine...</p>
-        <p style="font-size:12px; color:red; margin-top:20px;">(Hiding this screen in 5 seconds...)</p>
+    <div id="status">
+        <h2>✅ Access Key Found</h2>
+        <p>Injecting directly into CMS storage...</p>
+        <p>Please wait for reload.</p>
     </div>
 
     <script>
-      const tokenMsg = localStorage.getItem("cms_auth_token");
-      const overlay = document.getElementById('auto-login-msg');
+      // Function to parse the raw message string
+      function getJsonFromUrl(msg) {
+        try {
+          // The message looks like: authorization:github:success:{"token":"..."}
+          // We need to extract the JSON part after the last "success:"
+          const parts = msg.split("success:");
+          if (parts.length > 1) {
+            return JSON.parse(parts[1]);
+          }
+        } catch (e) {
+          return null;
+        }
+        return null;
+      }
 
-      if (tokenMsg) {
-        // Show overlay
-        overlay.classList.remove('hidden');
+      // Check for the key
+      const rawMsg = localStorage.getItem("cms_auth_token");
+
+      if (rawMsg) {
+        // Show status
+        document.getElementById('status').style.display = 'block';
+
+        // 1. Extract the Token
+        const data = getJsonFromUrl(rawMsg);
         
-        // Send signal
-        window.postMessage(tokenMsg, "*");
+        if (data && data.token) {
+          console.log("Injecting Token...");
 
-        // HIDE OVERLAY after 5 seconds so we can see errors
-        setTimeout(() => {
-          overlay.classList.add('hidden');
-        }, 5000);
+          // 2. Create the "Fake" User Object that Decap CMS expects
+          const userObj = {
+            "backendName": "github",
+            "name": "Admin",
+            "token": data.token
+          };
+
+          // 3. Save it where Decap CMS looks for it
+          localStorage.setItem("netlify-cms-user", JSON.stringify(userObj));
+          
+          // 4. Clean up the mailbox so we don't do this forever
+          localStorage.removeItem("cms_auth_token");
+
+          // 5. Reload the page to let Decap see the new user
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
       }
     </script>
 
