@@ -4,25 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
+    <style>
+      /* A loading overlay that covers the login button if we have a key */
+      #auto-login-msg {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255,255,255,0.95); z-index: 9999;
+        display: none; /* Hidden by default */
+        flex-direction: column; justify-content: center; align-items: center;
+        font-family: sans-serif; text-align: center;
+      }
+      h2 { color: #166534; }
+    </style>
   </head>
   <body>
     <script>
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
-
-      if (code) {
-        document.write("<h1 style='font-family:sans-serif; text-align:center; margin-top:50px;'>🔄 Completing Login...</h1><p style='text-align:center;'>Redirecting to verification...</p>");
-        // Forward the code to the traffic cop manually
-        window.location.href = "/api/callback?code=" + code;
-      }
-    </script>
-
-    <script>
+      // Check if we have a key from the Green Screen
       const tokenMsg = localStorage.getItem("cms_auth_token");
+
       if (tokenMsg) {
-        // If we have a key, give it to the dashboard
-        setTimeout(() => {
-           window.postMessage(tokenMsg, "*");
+        // A. Show the "Logging in" overlay immediately
+        document.write('<div id="auto-login-msg" style="display:flex;"><h2>🔐 Key Found!</h2><p>Hammering the dashboard to open...</p></div>');
+
+        // B. Spam the signal every 0.5 seconds for 15 seconds
+        let attempts = 0;
+        const interval = setInterval(() => {
+          window.postMessage(tokenMsg, "*");
+          console.log("Sent Login Signal: " + attempts);
+          attempts++;
+          
+          // Stop after 30 attempts (15 seconds) to save battery
+          if (attempts > 30) clearInterval(interval);
         }, 500);
       }
     </script>
@@ -30,4 +41,3 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
-
