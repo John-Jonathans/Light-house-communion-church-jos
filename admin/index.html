@@ -3,83 +3,119 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Access</title>
+    <title>Connection Tester</title>
     <style>
-      body { font-family: sans-serif; padding: 20px; background: #f3f4f6; }
-      #login-area { text-align: center; margin-top: 50px; }
-      #debug-area { background: white; padding: 20px; border-radius: 10px; border: 1px solid #ccc; display: none; }
-      .token-box { word-break: break-all; font-family: monospace; background: #eee; padding: 10px; margin: 10px 0; font-size: 10px; }
-      button.enter-btn { background: #166534; color: white; padding: 15px 30px; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 20px; }
+      body { font-family: sans-serif; padding: 20px; background: #111; color: white; }
+      .box { border: 1px solid #333; padding: 20px; border-radius: 10px; margin-top: 20px; background: #222; }
+      h2 { margin-top: 0; color: #4ade80; }
+      .error { color: #f87171; }
+      pre { background: black; padding: 10px; overflow-x: scroll; border: 1px solid #444; }
+      button { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; font-size: 16px; margin-top: 10px; cursor: pointer; }
     </style>
   </head>
   <body>
-    
-    <div id="debug-area">
-        <h2 style="color:green">✅ Verified Key Found!</h2>
-        <p>The system has your key, but the auto-login failed.</p>
-        <p><strong>Click the button below to force entry:</strong></p>
-        
-        <div class="token-box" id="token-display"></div>
-        
-        <button class="enter-btn" onclick="forceEnter()">🚀 ENTER DASHBOARD</button>
-        <br><br>
-        <button onclick="clearAndReset()" style="color:red; background:none; border:none; text-decoration:underline;">Reset System</button>
+    <h1>🛠️ Connection Tester</h1>
+    <p>We have the key. Now let's test the door.</p>
+
+    <div id="step1" class="box">
+      <h3>Step 1: Check Key</h3>
+      <div id="key-status">Waiting...</div>
     </div>
 
-    <div id="login-area">
-       </div>
+    <div id="step2" class="box" style="display:none;">
+      <h3>Step 2: Test Repository</h3>
+      <p>Target Repo: <strong id="repo-target">Loading...</strong></p>
+      <button onclick="testConnection()">⚡ Test Connection to GitHub</button>
+      <div id="connection-result"></div>
+    </div>
 
     <script>
-      // Helper to parse the message
-      function getJsonFromUrl(msg) {
-        try {
-          const parts = msg.split("success:");
-          if (parts.length > 1) return JSON.parse(parts[1]);
-        } catch (e) { return null; }
-        return null;
-      }
-
-      // 1. CHECK FOR KEY
-      const rawMsg = localStorage.getItem("cms_auth_token");
+      // 1. READ CONFIG TO FIND REPO NAME
+      let repoName = "John-Jonathans/Light-house-communion-church-jos"; // Default fallback
       
-      if (rawMsg) {
-        // HIDE the default login area immediately
-        document.getElementById('login-area').style.display = 'none';
-        document.getElementById('debug-area').style.display = 'block';
-        
-        // Show the raw key (for proof)
-        document.getElementById('token-display').innerText = rawMsg.substring(0, 50) + "...";
+      fetch('config.yml')
+        .then(r => r.text())
+        .then(text => {
+          const match = text.match(/repo:\s*(.*)/);
+          if (match) {
+             repoName = match[1].trim();
+             document.getElementById('repo-target').innerText = repoName;
+          }
+        });
+
+      // 2. GET TOKEN
+      function getJsonFromUrl(msg) {
+        try { return JSON.parse(msg.split("success:")[1]); } catch (e) { return null; }
       }
 
-      // 2. FORCE ENTRY FUNCTION
-      function forceEnter() {
+      const rawMsg = localStorage.getItem("cms_auth_token");
+      let token = "";
+
+      if (rawMsg) {
         const data = getJsonFromUrl(rawMsg);
         if (data && data.token) {
-           // Create the user object exactly how Decap wants it
-           const user = { 
-             "token": data.token, 
-             "backendName": "github",
-             "name": "admin", 
-             "avatar_url": "https://github.com/identicons/admin.png" 
-           };
-           
-           // Save to LocalStorage
-           localStorage.setItem("netlify-cms-user", JSON.stringify(user));
-           
-           // Reload page to apply
-           window.location.reload();
+          token = data.token;
+          document.getElementById('key-status').innerHTML = "<span style='color:#4ade80'>✅ Valid Key Found in Storage!</span>";
+          document.getElementById('step2').style.display = 'block';
         } else {
-           alert("Error: Key format is invalid. Please reset.");
+          document.getElementById('key-status').innerHTML = "<span class='error'>❌ Key format is wrong. Please Login again.</span>";
+        }
+      } else {
+        document.getElementById('key-status').innerHTML = "<span class='error'>⚠️ No Key Found. Please click 'Login with GitHub' first.</span>";
+      }
+
+      // 3. TEST GITHUB API
+      async function testConnection() {
+        const resDiv = document.getElementById('connection-result');
+        resDiv.innerHTML = "Contacting GitHub...";
+        
+        try {
+          // Verify if the token works for the user
+          const userReq = await fetch('https://api.github.com/user', {
+             headers: { Authorization: `Bearer ${token}` }
+          });
+          const userData = await userReq.json();
+          
+          if (!userReq.ok) {
+            resDiv.innerHTML = `<p class="error">❌ Token Rejected: ${userData.message}</p>`;
+            return;
+          }
+          
+          resDiv.innerHTML = `<p style="color:#4ade80">✅ Token is Good! (Logged in as: ${userData.login})</p>`;
+          resDiv.innerHTML += "Checking Repository access...";
+
+          // Verify if the repo exists
+          const repoReq = await fetch(`https://api.github.com/repos/${repoName}`, {
+             headers: { Authorization: `Bearer ${token}` }
+          });
+          
+          if (repoReq.status === 404) {
+             resDiv.innerHTML += `<p class="error">❌ <strong>REPO NOT FOUND!</strong><br>GitHub says "${repoName}" does not exist.<br>Check your spelling in config.yml!</p>`;
+          } else if (repoReq.ok) {
+             resDiv.innerHTML += `<p style="color:#4ade80">✅ <strong>REPO FOUND!</strong><br>Everything is perfect.</p>`;
+             resDiv.innerHTML += `<button onclick="launchCMS()">🚀 Launch CMS Now</button>`;
+          } else {
+             resDiv.innerHTML += `<p class="error">❌ Error: ${repoReq.statusText}</p>`;
+          }
+
+        } catch (err) {
+          resDiv.innerHTML = "Network Error: " + err.message;
         }
       }
 
-      function clearAndReset() {
-        localStorage.clear();
-        window.location.reload();
+      function launchCMS() {
+        // If test passed, inject user and reload
+        const user = { "token": token, "backendName": "github", "name": "admin" };
+        localStorage.setItem("netlify-cms-user", JSON.stringify(user));
+        
+        // Restore the original CMS code
+        document.body.innerHTML = "<h1 style='color:black;background:white;'>Reloading into Dashboard...</h1>";
+        // We reload to a special parameter to trigger a "clean" load next time, 
+        // but for now, you would need to revert the index.html file to the CMS version.
+        // This is just a test tool.
+        alert("Test Passed! Now we know the repo name is correct. You can revert index.html to the CMS version.");
       }
     </script>
-
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
 
