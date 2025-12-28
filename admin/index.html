@@ -3,66 +3,79 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel</title>
+    <title>Admin Access</title>
     <style>
-      body { font-family: sans-serif; text-align: center; padding: 20px; }
-      #status { margin-top: 50px; padding: 20px; background: #f0fdf4; border: 1px solid #166534; color: #166534; display: none; }
+      body { font-family: sans-serif; padding: 20px; background: #f3f4f6; }
+      #login-area { text-align: center; margin-top: 50px; }
+      #debug-area { background: white; padding: 20px; border-radius: 10px; border: 1px solid #ccc; display: none; }
+      .token-box { word-break: break-all; font-family: monospace; background: #eee; padding: 10px; margin: 10px 0; font-size: 10px; }
+      button.enter-btn { background: #166534; color: white; padding: 15px 30px; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 20px; }
     </style>
   </head>
   <body>
-    <div id="status">
-        <h2>✅ Access Key Found</h2>
-        <p>Injecting directly into CMS storage...</p>
-        <p>Please wait for reload.</p>
+    
+    <div id="debug-area">
+        <h2 style="color:green">✅ Verified Key Found!</h2>
+        <p>The system has your key, but the auto-login failed.</p>
+        <p><strong>Click the button below to force entry:</strong></p>
+        
+        <div class="token-box" id="token-display"></div>
+        
+        <button class="enter-btn" onclick="forceEnter()">🚀 ENTER DASHBOARD</button>
+        <br><br>
+        <button onclick="clearAndReset()" style="color:red; background:none; border:none; text-decoration:underline;">Reset System</button>
     </div>
 
+    <div id="login-area">
+       </div>
+
     <script>
-      // Function to parse the raw message string
+      // Helper to parse the message
       function getJsonFromUrl(msg) {
         try {
-          // The message looks like: authorization:github:success:{"token":"..."}
-          // We need to extract the JSON part after the last "success:"
           const parts = msg.split("success:");
-          if (parts.length > 1) {
-            return JSON.parse(parts[1]);
-          }
-        } catch (e) {
-          return null;
-        }
+          if (parts.length > 1) return JSON.parse(parts[1]);
+        } catch (e) { return null; }
         return null;
       }
 
-      // Check for the key
+      // 1. CHECK FOR KEY
       const rawMsg = localStorage.getItem("cms_auth_token");
-
+      
       if (rawMsg) {
-        // Show status
-        document.getElementById('status').style.display = 'block';
-
-        // 1. Extract the Token
-        const data = getJsonFromUrl(rawMsg);
+        // HIDE the default login area immediately
+        document.getElementById('login-area').style.display = 'none';
+        document.getElementById('debug-area').style.display = 'block';
         
+        // Show the raw key (for proof)
+        document.getElementById('token-display').innerText = rawMsg.substring(0, 50) + "...";
+      }
+
+      // 2. FORCE ENTRY FUNCTION
+      function forceEnter() {
+        const data = getJsonFromUrl(rawMsg);
         if (data && data.token) {
-          console.log("Injecting Token...");
-
-          // 2. Create the "Fake" User Object that Decap CMS expects
-          const userObj = {
-            "backendName": "github",
-            "name": "Admin",
-            "token": data.token
-          };
-
-          // 3. Save it where Decap CMS looks for it
-          localStorage.setItem("netlify-cms-user", JSON.stringify(userObj));
-          
-          // 4. Clean up the mailbox so we don't do this forever
-          localStorage.removeItem("cms_auth_token");
-
-          // 5. Reload the page to let Decap see the new user
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+           // Create the user object exactly how Decap wants it
+           const user = { 
+             "token": data.token, 
+             "backendName": "github",
+             "name": "admin", 
+             "avatar_url": "https://github.com/identicons/admin.png" 
+           };
+           
+           // Save to LocalStorage
+           localStorage.setItem("netlify-cms-user", JSON.stringify(user));
+           
+           // Reload page to apply
+           window.location.reload();
+        } else {
+           alert("Error: Key format is invalid. Please reset.");
         }
+      }
+
+      function clearAndReset() {
+        localStorage.clear();
+        window.location.reload();
       }
     </script>
 
