@@ -4,34 +4,70 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
+    <style>
+      body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f3f4f6; }
+      #login-ui { background: white; padding: 40px; border-radius: 10px; max-width: 400px; margin: 50px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+      h1 { color: #1f2937; margin-bottom: 30px; }
+      button.mobile-btn { 
+        background-color: #166534; color: white; border: none; 
+        padding: 15px 30px; font-size: 18px; border-radius: 8px; 
+        cursor: pointer; width: 100%; font-weight: bold;
+      }
+      p { color: #6b7280; margin-bottom: 20px; }
+    </style>
   </head>
   <body>
-    <script>
-      try {
-        // Look for the raw key you got from the "Green Screen"
-        const rawMsg = localStorage.getItem("cms_auth_token");
 
-        if (rawMsg && rawMsg.includes("token")) {
-          // Extract the hidden token
+    <div id="login-ui">
+      <h1>⚙️ Website Admin</h1>
+      <p>Mobile-Optimized Login</p>
+      <button class="mobile-btn" onclick="window.location.href='/api/callback'">
+        🚀 Login with GitHub
+      </button>
+    </div>
+
+    <script>
+      // A. Check if we just came back from GitHub with a fresh key
+      const rawMsg = localStorage.getItem("cms_auth_token");
+      
+      if (rawMsg && rawMsg.includes("token")) {
+        try {
+          // Extract the token
           const parts = rawMsg.split("success:");
           if (parts.length > 1) {
             const data = JSON.parse(parts[1]);
-
-            // FORCE-SAVE it exactly where Decap CMS looks for it
+            
+            // Save it exactly where Decap CMS wants it
             const user = { 
               token: data.token, 
               backendName: 'github',
-              name: 'admin'
+              name: 'admin' 
             };
             localStorage.setItem("netlify-cms-user", JSON.stringify(user));
-            console.log("🔐 Enforcer: Key restored successfully.");
+            
+            // Clean up the mailbox
+            localStorage.removeItem("cms_auth_token");
+            
+            // Reload to activate the dashboard
+            window.location.reload();
           }
-        }
-      } catch (e) {
-        console.error("Enforcer Error:", e);
+        } catch(e) { console.error(e); }
+      }
+
+      // B. Check if we are already logged in
+      const activeUser = localStorage.getItem("netlify-cms-user");
+      
+      if (activeUser) {
+        // If logged in, HIDE the login button and SHOW the dashboard
+        document.getElementById('login-ui').style.display = 'none';
+        
+        // Load the Decap Engine
+        const script = document.createElement('script');
+        script.src = "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js";
+        document.body.appendChild(script);
       }
     </script>
 
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
+
