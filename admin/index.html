@@ -3,23 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager</title>
+    <title>Admin Panel</title>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    
     <script>
-      // If the dashboard doesn't load in 3 seconds, tell the user why
-      setTimeout(() => {
-        if (!document.querySelector('.nc-app-root')) {
-           const token = localStorage.getItem("netlify-cms-user");
-           if (token) {
-             console.log("Key is present, Engine is starting...");
-           } else {
-             console.log("No key found. Login required.");
-           }
+      try {
+        // Look for the raw key you got from the "Green Screen"
+        const rawMsg = localStorage.getItem("cms_auth_token");
+
+        if (rawMsg && rawMsg.includes("token")) {
+          // Extract the hidden token
+          const parts = rawMsg.split("success:");
+          if (parts.length > 1) {
+            const data = JSON.parse(parts[1]);
+
+            // FORCE-SAVE it exactly where Decap CMS looks for it
+            const user = { 
+              token: data.token, 
+              backendName: 'github',
+              name: 'admin'
+            };
+            localStorage.setItem("netlify-cms-user", JSON.stringify(user));
+            console.log("🔐 Enforcer: Key restored successfully.");
+          }
         }
-      }, 3000);
+      } catch (e) {
+        console.error("Enforcer Error:", e);
+      }
     </script>
+
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
