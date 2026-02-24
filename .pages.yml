@@ -24,7 +24,8 @@ content:
     fields:
       - name: books
         label: Book List
-        type: list
+        type: object
+        list: true
         fields:
           - name: title
             label: Book Title
