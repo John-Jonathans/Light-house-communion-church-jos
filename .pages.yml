@@ -1,0 +1,37 @@
+media: assets/images
+public_path: /assets/images
+
+content:
+  - name: pages
+    label: Website Pages
+    type: collection
+    path: /
+    view:
+      fields: [title]
+    fields:
+      - name: title
+        label: Page Title
+        type: string
+      - name: intro
+        label: Main Text
+        type: text
+
+  - name: library
+    label: Book Library
+    type: file
+    path: books.json
+    format: json
+    fields:
+      - name: books
+        label: Book List
+        type: list
+        fields:
+          - name: title
+            label: Book Title
+            type: string
+          - name: author
+            label: Author Name
+            type: string
+          - name: cover
+            label: Cover Image
+            type: image
