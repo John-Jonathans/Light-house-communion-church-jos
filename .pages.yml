@@ -2,18 +2,23 @@ media: assets/images
 public_path: /assets/images
 
 content:
-  - name: pages
-    label: Website Pages
-    type: collection
-    path: /
-    view:
-      fields: [title]
+  - name: homepage
+    label: Home Page Settings
+    type: file
+    path: home.json
+    format: json
     fields:
-      - name: title
-        label: Page Title
+      - name: hero_title
+        label: Main Headline
         type: string
-      - name: intro
-        label: Main Text
+      - name: hero_subtitle
+        label: Subheadline
+        type: string
+      - name: hero_image
+        label: Background Image
+        type: image
+      - name: announcement
+        label: Latest Announcement Banner
         type: text
 
   - name: library
