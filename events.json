@@ -1,3 +1,10 @@
 {
-  "events": []
+  "events": [
+    {
+      "title": "Youth Praise Night",
+      "date": "Friday, March 15th at 6:00 PM",
+      "description": "Join us for an unforgettable night of worship, word, and fellowship!",
+      "image": "/assets/images/images (18).jpeg"
+    }
+  ]
 }
