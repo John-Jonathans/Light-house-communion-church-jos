@@ -57,7 +57,7 @@
             <p class="mt-4 text-gray-500">Loading Library...</p>
         </div>
 
-        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-6 pb-12 no-scrollbar hidden">
+        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-6 px-6 pb-12 no-scrollbar hidden">
             </div>
 
     </main>
@@ -89,7 +89,8 @@
                             if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
 
                             const card = document.createElement('div');
-                            card.className = "min-w-[85vw] md:min-w-[350px] snap-center bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100 flex flex-col";
+                            // Added snap-always here to act as a "brake"
+                            card.className = "min-w-[85vw] md:min-w-[350px] snap-center snap-always bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100 flex flex-col";
                             
                             card.innerHTML = `
                                 <div class="h-64 bg-gray-100 relative">
