@@ -36,3 +36,27 @@ content:
           - name: cover
             label: Cover Image
             type: image
+
+  - name: events_list
+    label: Church Events
+    type: file
+    path: events.json
+    format: json
+    fields:
+      - name: events
+        label: Events List
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Event Title
+            type: string
+          - name: date
+            label: Date & Time
+            type: string
+          - name: description
+            label: Description
+            type: text
+          - name: image
+            label: Event Flyer
+            type: image
