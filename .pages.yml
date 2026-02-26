@@ -1,19 +1,82 @@
-- name: events_list
-    label: Church Events & Schedule
+media: assets/images
+public_path: /assets/images
+
+content:
+  - name: homepage
+    label: Home Page Settings
+    type: file
+    path: home.json
+    format: json
+    fields:
+      - name: hero_title
+        label: Main Headline
+        type: string
+      - name: hero_subtitle
+        label: Subheadline
+        type: string
+      - name: hero_image
+        label: Background Image
+        type: image
+      - name: announcement
+        label: Latest Announcement Banner
+        type: text
+
+  - name: leadership
+    label: Leadership Page
+    type: file
+    path: leadership.json
+    format: json
+    fields:
+      - name: leader_name
+        label: Bishop Name
+        type: string
+      - name: leader_title
+        label: Official Title
+        type: string
+      - name: leader_image
+        label: Profile Photo
+        type: image
+      - name: leader_bio
+        label: Biography
+        type: text
+
+  - name: library
+    label: Book Library
+    type: file
+    path: books.json
+    format: json
+    fields:
+      - name: books
+        label: Book List
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Book Title
+            type: string
+          - name: author
+            label: Author Name
+            type: string
+          - name: cover
+            label: Cover Image
+            type: image
+
+  - name: events_list
+    label: Church Events
     type: file
     path: events.json
     format: json
     fields:
       - name: schedule
-        label: Weekly Service Schedule
+        label: Weekly Schedule
         type: object
         list: true
         fields:
           - name: day
-            label: Day of Week
+            label: Day
             type: string
           - name: icon
-            label: Custom Icon/Image
+            label: Custom Icon
             type: image
           - name: title
             label: Service Name
@@ -22,11 +85,11 @@
             label: Time
             type: string
           - name: description
-            label: Short Description
+            label: Description
             type: string
 
       - name: events
-        label: Upcoming Special Events
+        label: Special Events
         type: object
         list: true
         fields:
@@ -34,7 +97,7 @@
             label: Event Title
             type: string
           - name: date
-            label: Date & Time
+            label: Date Time
             type: string
           - name: description
             label: Description
