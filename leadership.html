@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leadership - Lighthouse Communion Church</title>
     
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛪</text></svg>">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://church-jos.vercel.app/leadership.html">
+    <meta property="og:title" content="Leadership - Lighthouse Communion Church">
+    <meta property="og:description" content="Meet the visionary leaders behind the mandate. Raising a people of Power, Character, and Charisma.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1200&auto=format&fit=crop">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -41,8 +49,8 @@
 <body class="bg-gray-50 text-gray-800 antialiased font-sans flex flex-col min-h-screen">
 
     <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group relative z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
+            <a href="index.html" class="flex items-center gap-2 group hover:scale-105 transition-transform duration-300">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center bg-church-orange text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                 </div>
@@ -57,20 +65,20 @@
                 <a href="#join" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-church-orange text-white hover:bg-purple-800 shadow-lg hover:shadow-xl">Give Now</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-gray-800 focus:outline-none relative z-50 p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-gray-800 focus:outline-none p-2 z-50">
                 <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
                 <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
-
-        <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-40 flex-col pt-24 px-6 space-y-6 md:hidden animate-fade-in">
-            <a href="index.html" class="text-2xl font-serif font-medium text-gray-900 border-b border-gray-100 pb-2">Home</a>
-            <a href="leadership.html" class="text-2xl font-serif font-medium text-church-orange border-b border-gray-100 pb-2">The Bishop</a>
-            <a href="books.html" class="text-2xl font-serif font-medium text-gray-900 border-b border-gray-100 pb-2">Library</a>
-            <a href="events.html" class="text-2xl font-serif font-medium text-gray-900 border-b border-gray-100 pb-2">Events</a>
-            <a href="#join" class="w-full text-center py-3 rounded-lg bg-church-orange text-white font-bold text-lg mt-4 shadow-md">Give Now</a>
-        </div>
     </nav>
+
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-8 animate-fade-in pt-16">
+        <a href="index.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Home</a>
+        <a href="leadership.html" class="text-2xl font-serif font-medium text-church-orange">The Bishop</a>
+        <a href="books.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Library</a>
+        <a href="events.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Events</a>
+        <a href="#join" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
+    </div>
 
     <header class="bg-church-dark pt-28 pb-12 md:pt-36 md:pb-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
@@ -183,25 +191,24 @@
             const width = galleryContainer.clientWidth;
             galleryContainer.scrollTo({
                 left: width * index,
-                behavior: instantJump ? 'auto' : 'smooth' // 'auto' removes the smooth scrolling animation
+                behavior: instantJump ? 'auto' : 'smooth'
             });
         }
 
         // --- Start Auto-Scroll Timer ---
         function startAutoScroll() {
-            stopAutoScroll(); // Ensure no duplicate timers
+            stopAutoScroll(); 
             autoScrollTimer = setInterval(() => {
                 let nextIndex = currentIndex + 1;
                 let instantJump = false;
                 
-                // If we reach the end, jump back to the beginning instantly
                 if (nextIndex >= totalImages) {
                     nextIndex = 0;
                     instantJump = true; 
                 }
                 
                 scrollToSlide(nextIndex, instantJump);
-            }, 4000); // 4 seconds
+            }, 4000); 
         }
 
         function stopAutoScroll() {
@@ -219,7 +226,6 @@
                     if (data.leader_title) document.getElementById('leader-title').textContent = data.leader_title;
                     if (data.leader_bio) document.getElementById('leader-bio').innerHTML = data.leader_bio;
                     
-                    // 1. Load your permanent, static images FIRST so they stay in place
                     const existingImages = [
                         "bishop1.jpg",
                         "bishopfacebook.jpg",
@@ -229,7 +235,6 @@
                     
                     let imagesToLoad = [...existingImages];
 
-                    // 2. If the user uploads a new CMS image, stick it at the END
                     if (data.leader_image && data.leader_image !== "") {
                         let imgPath = data.leader_image;
                         if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
@@ -238,33 +243,26 @@
                     
                     totalImages = imagesToLoad.length;
 
-                    // Inject Images & Dots
                     imagesToLoad.forEach((img, index) => {
-                        // Create Slide
                         const slide = document.createElement('div');
                         slide.className = "min-w-full h-full snap-center snap-always flex items-center justify-center bg-gray-900 shrink-0";
                         slide.innerHTML = `<img src="${img}" class="w-full h-full object-cover" alt="Bishop Photo ${index + 1}" />`;
                         galleryContainer.appendChild(slide);
 
-                        // Create Dot
                         const dot = document.createElement('div');
                         dot.className = `dot w-2.5 h-2.5 rounded-full bg-white`;
                         dotsContainer.appendChild(dot);
                     });
 
-                    // Initialize first dot as active
                     updateDots(0);
 
-                    // --- Setup Scroll Listeners for Dots & Auto-Pilot ---
                     galleryContainer.addEventListener('touchstart', () => { stopAutoScroll(); isManualScrolling = true; }, {passive: true});
                     galleryContainer.addEventListener('touchend', () => { startAutoScroll(); isManualScrolling = false; }, {passive: true});
                     galleryContainer.addEventListener('mouseenter', stopAutoScroll);
                     galleryContainer.addEventListener('mouseleave', startAutoScroll);
 
-                    // The main scroll listener that updates dots
                     galleryContainer.addEventListener('scroll', () => {
                         const width = galleryContainer.clientWidth;
-                        // Calculate current index based on scroll position
                         const newIndex = Math.round(galleryContainer.scrollLeft / width);
                         
                         if(newIndex !== currentIndex && newIndex >= 0 && newIndex < totalImages) {
@@ -273,7 +271,6 @@
                         }
                     });
 
-                    // Start the engine
                     startAutoScroll();
                 }
             } catch (error) {
