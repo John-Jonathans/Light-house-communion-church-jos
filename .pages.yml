@@ -21,6 +21,25 @@ content:
         label: Latest Announcement Banner
         type: text
 
+  - name: leadership
+    label: Leadership Page
+    type: file
+    path: leadership.json
+    format: json
+    fields:
+      - name: leader_name
+        label: Bishop's Name
+        type: string
+      - name: leader_title
+        label: Official Title
+        type: string
+      - name: leader_image
+        label: Profile Photo
+        type: image
+      - name: leader_bio
+        label: Biography / About
+        type: text
+
   - name: library
     label: Book Library
     type: file
