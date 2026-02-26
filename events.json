@@ -1,16 +1,23 @@
 {
-  "events": [
+  "schedule": [
     {
-      "title": "Youth Praise Night",
-      "date": "Friday, March 15th at 6:00 PM",
-      "description": "Join us for an unforgettable night of worship, word, and fellowship!",
-      "image": "/assets/images/images (18).jpeg"
+      "day": "Sunday",
+      "title": "Worship Service",
+      "time": "9:00 AM",
+      "description": "A time of power, praise, and the Word."
     },
     {
-      "title": "Thanksgiving service ",
-      "date": "9: 34 pm",
-      "description": "come join us give thanks ",
-      "image": "/assets/images/images (7).jpeg"
+      "day": "Wednesday",
+      "title": "Bible Study",
+      "time": "6:00 PM",
+      "description": "Digging deep into scriptures for spiritual growth."
+    },
+    {
+      "day": "Friday",
+      "title": "Prayer Meeting",
+      "time": "6:00 PM",
+      "description": "Communion and intercession for the nations."
     }
-  ]
+  ],
+  "events": []
 }
