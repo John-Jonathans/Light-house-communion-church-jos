@@ -160,15 +160,26 @@
                     if (data.schedule && data.schedule.length > 0) {
                         scheduleContainer.innerHTML = ''; // Clear loading text
                         data.schedule.forEach((item, index) => {
+                            let iconHTML;
+                            
+                            // Check if a custom icon was uploaded
+                            if (item.icon && item.icon.trim() !== "") {
+                                let iconPath = item.icon.startsWith('/') ? item.icon.substring(1) : item.icon;
+                                iconHTML = `<div class="w-12 h-12 rounded-full bg-church-orange/10 flex items-center justify-center overflow-hidden"><img src="${iconPath}" alt="icon" class="w-full h-full object-cover"></div>`;
+                            } else {
+                                // Default generic icon
+                                iconHTML = `<div class="w-10 h-10 rounded-full bg-church-orange/10 flex items-center justify-center text-church-orange group-hover:bg-church-orange group-hover:text-white transition-colors duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    </div>`;
+                            }
+
                             const card = document.createElement('div');
                             card.className = "bg-gray-50 rounded-xl p-6 md:p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group flex flex-col items-center text-center reveal cursor-pointer";
                             card.style.transitionDelay = `${index * 100}ms`;
                             
                             card.innerHTML = `
                                 <div class="flex items-center gap-3 mb-4">
-                                    <div class="w-10 h-10 rounded-full bg-church-orange/10 flex items-center justify-center text-church-orange group-hover:bg-church-orange group-hover:text-white transition-colors duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                    </div>
+                                    ${iconHTML}
                                     <span class="font-bold text-lg text-church-dark">${item.day}</span>
                                 </div>
                                 <h3 class="text-xl md:text-2xl font-serif font-bold mb-2">${item.title}</h3>
@@ -180,7 +191,6 @@
                             `;
                             scheduleContainer.appendChild(card);
                         });
-                        // Re-trigger observer for new schedule items
                         initScrollReveal();
                     }
 
@@ -216,18 +226,17 @@
                             `;
                             eventsContainer.appendChild(card);
                         });
-                        // Re-trigger observer for new event items
                         initScrollReveal();
                     } else {
                         noEvents.classList.remove('hidden');
-                        initScrollReveal(); // Trigger reveals even if no events
+                        initScrollReveal();
                     }
                 }
             } catch (error) {
                 console.error(error);
                 loading.style.display = 'none';
                 noEvents.classList.remove('hidden');
-                initScrollReveal(); // Ensure static elements reveal on error
+                initScrollReveal();
             }
         }
 
@@ -250,7 +259,7 @@
 
         // Run functions immediately
         loadData();
-        initScrollReveal(); // CALLING THIS HERE IS THE FIX to show static elements instantly!
+        initScrollReveal();
     </script>
 </body>
 </html>
