@@ -178,15 +178,13 @@
             });
         }
 
-        // --- Function to scroll to specific slide (for auto-scroll) ---
-        function scrollToSlide(index) {
+        // --- Function to scroll to specific slide (supports instant jump) ---
+        function scrollToSlide(index, instantJump = false) {
             const width = galleryContainer.clientWidth;
             galleryContainer.scrollTo({
                 left: width * index,
-                behavior: 'smooth'
+                behavior: instantJump ? 'auto' : 'smooth' // 'auto' removes the smooth scrolling animation
             });
-            // Note: We don't update dots here, we let the scroll listener handle it
-            // to ensure dots sync with manual swipes too.
         }
 
         // --- Start Auto-Scroll Timer ---
@@ -194,10 +192,15 @@
             stopAutoScroll(); // Ensure no duplicate timers
             autoScrollTimer = setInterval(() => {
                 let nextIndex = currentIndex + 1;
+                let instantJump = false;
+                
+                // If we reach the end, jump back to the beginning instantly
                 if (nextIndex >= totalImages) {
                     nextIndex = 0;
+                    instantJump = true; 
                 }
-                scrollToSlide(nextIndex);
+                
+                scrollToSlide(nextIndex, instantJump);
             }, 4000); // 4 seconds
         }
 
@@ -216,15 +219,7 @@
                     if (data.leader_title) document.getElementById('leader-title').textContent = data.leader_title;
                     if (data.leader_bio) document.getElementById('leader-bio').innerHTML = data.leader_bio;
                     
-                    // Prepare Images
-                    let imagesToLoad = [];
-                    if (data.leader_image && data.leader_image !== "") {
-                        let imgPath = data.leader_image;
-                        if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
-                        imagesToLoad.push(imgPath);
-                    }
-                    
-                    // Add as many static images here as you want.
+                    // 1. Load your permanent, static images FIRST so they stay in place
                     const existingImages = [
                         "bishop1.jpg",
                         "bishopfacebook.jpg",
@@ -232,21 +227,27 @@
                         "bishopndwife2.jpg"
                     ];
                     
-                    imagesToLoad = [...imagesToLoad, ...existingImages];
+                    let imagesToLoad = [...existingImages];
+
+                    // 2. If the user uploads a new CMS image, stick it at the END
+                    if (data.leader_image && data.leader_image !== "") {
+                        let imgPath = data.leader_image;
+                        if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
+                        imagesToLoad.push(imgPath);
+                    }
+                    
                     totalImages = imagesToLoad.length;
 
                     // Inject Images & Dots
                     imagesToLoad.forEach((img, index) => {
-                        // 1. Create Slide
+                        // Create Slide
                         const slide = document.createElement('div');
                         slide.className = "min-w-full h-full snap-center snap-always flex items-center justify-center bg-gray-900 shrink-0";
-                        // CHANGED to object-cover for better fit
                         slide.innerHTML = `<img src="${img}" class="w-full h-full object-cover" alt="Bishop Photo ${index + 1}" />`;
                         galleryContainer.appendChild(slide);
 
-                        // 2. Create Dot
+                        // Create Dot
                         const dot = document.createElement('div');
-                        // Base dot styles
                         dot.className = `dot w-2.5 h-2.5 rounded-full bg-white`;
                         dotsContainer.appendChild(dot);
                     });
@@ -255,8 +256,6 @@
                     updateDots(0);
 
                     // --- Setup Scroll Listeners for Dots & Auto-Pilot ---
-                    
-                    // Detect manual scrolling vs auto scrolling
                     galleryContainer.addEventListener('touchstart', () => { stopAutoScroll(); isManualScrolling = true; }, {passive: true});
                     galleryContainer.addEventListener('touchend', () => { startAutoScroll(); isManualScrolling = false; }, {passive: true});
                     galleryContainer.addEventListener('mouseenter', stopAutoScroll);
