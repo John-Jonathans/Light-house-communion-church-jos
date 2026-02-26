@@ -97,7 +97,7 @@
             </div>
             
             <div id="schedule-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="col-span-3 text-center text-gray-400 py-8">Loading schedule...</div>
+                 <div class="col-span-3 text-center text-gray-400 py-8">Loading schedule...</div>
             </div>
         </div>
     </section>
@@ -180,6 +180,8 @@
                             `;
                             scheduleContainer.appendChild(card);
                         });
+                        // Re-trigger observer for new schedule items
+                        initScrollReveal();
                     }
 
                     // 2. Load Special Events
@@ -214,15 +216,18 @@
                             `;
                             eventsContainer.appendChild(card);
                         });
+                        // Re-trigger observer for new event items
                         initScrollReveal();
                     } else {
                         noEvents.classList.remove('hidden');
+                        initScrollReveal(); // Trigger reveals even if no events
                     }
                 }
             } catch (error) {
                 console.error(error);
                 loading.style.display = 'none';
                 noEvents.classList.remove('hidden');
+                initScrollReveal(); // Ensure static elements reveal on error
             }
         }
 
@@ -243,8 +248,9 @@
             });
         }
 
-        // Run functions
+        // Run functions immediately
         loadData();
+        initScrollReveal(); // CALLING THIS HERE IS THE FIX to show static elements instantly!
     </script>
 </body>
 </html>
