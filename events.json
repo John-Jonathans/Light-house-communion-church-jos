@@ -3,13 +3,13 @@
     {
       "day": "Sunday",
       "title": "Worship Service",
-      "time": "9:00 AM",
+      "time": "10:00 AM",
       "description": "A time of power, praise, and the Word."
     },
     {
       "day": "Wednesday",
       "title": "Bible Study",
-      "time": "6:00 PM",
+      "time": "9:00 PM",
       "description": "Digging deep into scriptures for spiritual growth."
     },
     {
@@ -18,6 +18,5 @@
       "time": "6:00 PM",
       "description": "Communion and intercession for the nations."
     }
-  ],
-  "events": []
+  ]
 }
