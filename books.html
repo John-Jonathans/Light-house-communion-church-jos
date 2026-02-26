@@ -36,6 +36,8 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Reveal Animations */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
@@ -44,23 +46,40 @@
 </head>
 <body class="bg-gray-50 font-sans flex flex-col min-h-screen">
 
-    <nav class="bg-church-dark text-white p-4 sticky top-0 z-50 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
+        <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
             <a href="index.html" class="flex items-center gap-2 group hover:scale-105 transition-transform duration-300">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center bg-church-orange text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                 </div>
-                <span class="text-xl font-bold font-serif text-church-gold tracking-wide">Lighthouse</span>
+                <span class="font-serif font-bold text-lg tracking-wide text-gray-900">Lighthouse</span>
             </a>
-            <div class="flex gap-4 text-sm items-center">
-                <a href="index.html" class="hover:text-church-orange transition-colors">Home</a>
-                <span class="text-gray-400 border border-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5">Library</span>
+
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Home</a>
+                <a href="leadership.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">The Bishop</a>
+                <a href="books.html" class="text-sm font-semibold tracking-wide text-church-orange transition-colors">Library</a>
+                <a href="events.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Events</a>
+                <a href="#join" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-church-orange text-white hover:bg-purple-800 shadow-lg hover:shadow-xl">Give Now</a>
             </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-gray-800 focus:outline-none p-2 z-50">
+                <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+                <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
     </nav>
 
-    <header class="bg-white shadow relative z-10">
-        <div class="container mx-auto px-6 py-12 text-center reveal">
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-8 animate-fade-in pt-16">
+        <a href="index.html" class="text-2xl font-serif font-medium text-gray-900">Home</a>
+        <a href="leadership.html" class="text-2xl font-serif font-medium text-gray-900">The Bishop</a>
+        <a href="books.html" class="text-2xl font-serif font-medium text-church-orange">Library</a>
+        <a href="events.html" class="text-2xl font-serif font-medium text-gray-900">Events</a>
+        <a href="#join" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
+    </div>
+
+    <header class="bg-white shadow relative z-10 pt-28 pb-12">
+        <div class="container mx-auto px-6 text-center reveal">
             <h1 class="text-4xl font-serif font-bold text-church-dark mb-2">Books & Resources</h1>
             <p class="text-gray-600">Swipe to view our library.</p>
         </div>
@@ -83,6 +102,20 @@
     </footer>
 
     <script>
+        // --- Mobile Menu Logic ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // --- Load Books Logic ---
         async function loadBooks() {
             const container = document.getElementById('book-container');
             const loading = document.getElementById('loading');
@@ -101,10 +134,7 @@
                             if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
 
                             const card = document.createElement('div');
-                            // UPGRADED CLASSES: Added hover:-translate-y-2 hover:shadow-2xl reveal
                             card.className = "min-w-[85vw] md:min-w-[350px] snap-center snap-always bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer reveal";
-                            
-                            // Add a slight stagger to the animation based on index
                             card.style.transitionDelay = `${index * 100}ms`;
                             
                             card.innerHTML = `
@@ -120,8 +150,6 @@
                             `;
                             container.appendChild(card);
                         });
-
-                        // Re-trigger the scroll observer for the newly added books
                         initScrollReveal();
                     } else {
                         container.innerHTML = `
@@ -142,7 +170,7 @@
             }
         }
 
-        // Scroll Reveal Logic
+        // --- Scroll Reveal Logic ---
         function initScrollReveal() {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
@@ -159,10 +187,8 @@
             });
         }
 
-        // Run functions
         loadBooks();
         initScrollReveal();
     </script>
-
 </body>
 </html>
