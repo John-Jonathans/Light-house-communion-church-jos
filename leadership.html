@@ -170,15 +170,13 @@
                     // Setup Swipeable Gallery
                     const galleryContainer = document.getElementById('gallery-container');
                     
-                    // We check if they uploaded a dynamic image. If not, we use the default static images you had before.
                     let imagesToLoad = [];
                     if (data.leader_image && data.leader_image !== "") {
                         let imgPath = data.leader_image;
                         if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
-                        imagesToLoad.push(imgPath); // First image is the one from CMS
+                        imagesToLoad.push(imgPath);
                     }
                     
-                    // Add your fallback/existing images here so there's always a gallery to swipe
                     const existingImages = [
                         "bishop1.jpg",
                         "bishopfacebook.jpg",
@@ -194,6 +192,40 @@
                         slide.innerHTML = `<img src="${img}" class="w-full h-full object-contain" alt="Bishop Photo" />`;
                         galleryContainer.appendChild(slide);
                     });
+
+                    // --- Auto-Pilot Scroll Logic ---
+                    let autoScrollTimer;
+                    
+                    function startAutoScroll() {
+                        autoScrollTimer = setInterval(() => {
+                            if (!galleryContainer) return;
+                            const maxScroll = galleryContainer.scrollWidth - galleryContainer.clientWidth;
+                            let targetScroll = galleryContainer.scrollLeft + galleryContainer.clientWidth;
+                            
+                            // If we hit the end, reset to the beginning smoothly
+                            if (targetScroll >= maxScroll + 5) {
+                                targetScroll = 0;
+                            }
+                            
+                            galleryContainer.scrollTo({
+                                left: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }, 4000); // 4 seconds per slide
+                    }
+
+                    function stopAutoScroll() {
+                        clearInterval(autoScrollTimer);
+                    }
+
+                    // Start the auto-pilot
+                    startAutoScroll();
+
+                    // Pause auto-pilot when someone touches the gallery or hovers their mouse over it
+                    galleryContainer.addEventListener('touchstart', stopAutoScroll, {passive: true});
+                    galleryContainer.addEventListener('touchend', startAutoScroll, {passive: true});
+                    galleryContainer.addEventListener('mouseenter', stopAutoScroll);
+                    galleryContainer.addEventListener('mouseleave', startAutoScroll);
                 }
             } catch (error) {
                 console.error("Error loading leadership data:", error);
