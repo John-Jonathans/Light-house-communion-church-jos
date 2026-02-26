@@ -32,6 +32,10 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Dot transition styles */
+        .dot { transition: all 0.3s ease; opacity: 0.5; transform: scale(0.8); }
+        .dot.active { opacity: 1; transform: scale(1.2); background-color: #FFD700; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased font-sans flex flex-col min-h-screen">
@@ -84,15 +88,12 @@
                 
                 <div class="w-full lg:w-5/12 relative lg:sticky lg:top-28 z-10">
                     
-                    <div class="relative w-full h-[450px] lg:h-[600px] rounded-xl shadow-2xl border-4 border-gray-100 bg-gray-200 group overflow-hidden">
+                    <div class="relative w-full h-[450px] lg:h-[600px] rounded-xl shadow-2xl border-4 border-gray-100 bg-gray-900 group overflow-hidden">
                         <div id="gallery-container" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth h-full w-full no-scrollbar">
                             </div>
                         
-                        <div class="absolute bottom-4 left-0 right-0 flex justify-center z-10 p-4 bg-gradient-to-t from-black/50 to-transparent pointer-events-none">
-                            <span class="text-white/80 text-xs tracking-widest uppercase font-bold bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
-                                Swipe Photos &rarr;
-                            </span>
-                        </div>
+                        <div id="gallery-dots" class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
+                            </div>
                     </div>
 
                     <div class="mt-6 text-center lg:text-left bg-gray-50 p-6 rounded-lg lg:bg-transparent lg:p-0">
@@ -156,6 +157,54 @@
             closeIcon.classList.toggle('hidden');
         });
 
+        // --- Gallery Logic Variables ---
+        let currentIndex = 0;
+        let autoScrollTimer;
+        let isManualScrolling = false;
+        const galleryContainer = document.getElementById('gallery-container');
+        const dotsContainer = document.getElementById('gallery-dots');
+        let totalImages = 0;
+
+        // --- Function to update active dot ---
+        function updateDots(activeIndex) {
+            Array.from(dotsContainer.children).forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active', 'bg-church-gold');
+                    dot.classList.remove('bg-white');
+                } else {
+                    dot.classList.remove('active', 'bg-church-gold');
+                    dot.classList.add('bg-white');
+                }
+            });
+        }
+
+        // --- Function to scroll to specific slide (for auto-scroll) ---
+        function scrollToSlide(index) {
+            const width = galleryContainer.clientWidth;
+            galleryContainer.scrollTo({
+                left: width * index,
+                behavior: 'smooth'
+            });
+            // Note: We don't update dots here, we let the scroll listener handle it
+            // to ensure dots sync with manual swipes too.
+        }
+
+        // --- Start Auto-Scroll Timer ---
+        function startAutoScroll() {
+            stopAutoScroll(); // Ensure no duplicate timers
+            autoScrollTimer = setInterval(() => {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= totalImages) {
+                    nextIndex = 0;
+                }
+                scrollToSlide(nextIndex);
+            }, 4000); // 4 seconds
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollTimer);
+        }
+
         // --- Fetch Dynamic Leadership Data ---
         async function loadLeadershipData() {
             try {
@@ -167,9 +216,7 @@
                     if (data.leader_title) document.getElementById('leader-title').textContent = data.leader_title;
                     if (data.leader_bio) document.getElementById('leader-bio').innerHTML = data.leader_bio;
                     
-                    // Setup Swipeable Gallery
-                    const galleryContainer = document.getElementById('gallery-container');
-                    
+                    // Prepare Images
                     let imagesToLoad = [];
                     if (data.leader_image && data.leader_image !== "") {
                         let imgPath = data.leader_image;
@@ -177,6 +224,7 @@
                         imagesToLoad.push(imgPath);
                     }
                     
+                    // Add as many static images here as you want.
                     const existingImages = [
                         "bishop1.jpg",
                         "bishopfacebook.jpg",
@@ -185,47 +233,49 @@
                     ];
                     
                     imagesToLoad = [...imagesToLoad, ...existingImages];
+                    totalImages = imagesToLoad.length;
 
-                    imagesToLoad.forEach(img => {
+                    // Inject Images & Dots
+                    imagesToLoad.forEach((img, index) => {
+                        // 1. Create Slide
                         const slide = document.createElement('div');
-                        slide.className = "min-w-full h-full snap-center snap-always flex items-center justify-center bg-black shrink-0";
-                        slide.innerHTML = `<img src="${img}" class="w-full h-full object-contain" alt="Bishop Photo" />`;
+                        slide.className = "min-w-full h-full snap-center snap-always flex items-center justify-center bg-gray-900 shrink-0";
+                        // CHANGED to object-cover for better fit
+                        slide.innerHTML = `<img src="${img}" class="w-full h-full object-cover" alt="Bishop Photo ${index + 1}" />`;
                         galleryContainer.appendChild(slide);
+
+                        // 2. Create Dot
+                        const dot = document.createElement('div');
+                        // Base dot styles
+                        dot.className = `dot w-2.5 h-2.5 rounded-full bg-white`;
+                        dotsContainer.appendChild(dot);
                     });
 
-                    // --- Auto-Pilot Scroll Logic ---
-                    let autoScrollTimer;
+                    // Initialize first dot as active
+                    updateDots(0);
+
+                    // --- Setup Scroll Listeners for Dots & Auto-Pilot ---
                     
-                    function startAutoScroll() {
-                        autoScrollTimer = setInterval(() => {
-                            if (!galleryContainer) return;
-                            const maxScroll = galleryContainer.scrollWidth - galleryContainer.clientWidth;
-                            let targetScroll = galleryContainer.scrollLeft + galleryContainer.clientWidth;
-                            
-                            // If we hit the end, reset to the beginning smoothly
-                            if (targetScroll >= maxScroll + 5) {
-                                targetScroll = 0;
-                            }
-                            
-                            galleryContainer.scrollTo({
-                                left: targetScroll,
-                                behavior: 'smooth'
-                            });
-                        }, 4000); // 4 seconds per slide
-                    }
-
-                    function stopAutoScroll() {
-                        clearInterval(autoScrollTimer);
-                    }
-
-                    // Start the auto-pilot
-                    startAutoScroll();
-
-                    // Pause auto-pilot when someone touches the gallery or hovers their mouse over it
-                    galleryContainer.addEventListener('touchstart', stopAutoScroll, {passive: true});
-                    galleryContainer.addEventListener('touchend', startAutoScroll, {passive: true});
+                    // Detect manual scrolling vs auto scrolling
+                    galleryContainer.addEventListener('touchstart', () => { stopAutoScroll(); isManualScrolling = true; }, {passive: true});
+                    galleryContainer.addEventListener('touchend', () => { startAutoScroll(); isManualScrolling = false; }, {passive: true});
                     galleryContainer.addEventListener('mouseenter', stopAutoScroll);
                     galleryContainer.addEventListener('mouseleave', startAutoScroll);
+
+                    // The main scroll listener that updates dots
+                    galleryContainer.addEventListener('scroll', () => {
+                        const width = galleryContainer.clientWidth;
+                        // Calculate current index based on scroll position
+                        const newIndex = Math.round(galleryContainer.scrollLeft / width);
+                        
+                        if(newIndex !== currentIndex && newIndex >= 0 && newIndex < totalImages) {
+                            currentIndex = newIndex;
+                            updateDots(currentIndex);
+                        }
+                    });
+
+                    // Start the engine
+                    startAutoScroll();
                 }
             } catch (error) {
                 console.error("Error loading leadership data:", error);
