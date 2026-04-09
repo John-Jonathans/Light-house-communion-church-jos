@@ -92,7 +92,7 @@
             <p class="mt-4 text-gray-500">Loading Library...</p>
         </div>
 
-        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-6 pb-12 no-scrollbar hidden overscroll-x-contain" style="-webkit-overflow-scrolling: touch;">
+        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-12 w-full no-scrollbar hidden">
         </div>
 
     </main>
@@ -135,7 +135,7 @@
 
                             const card = document.createElement('div');
                             // NEW BUTTERY SMOOTH CARD CSS HERE
-                            card.className = "min-w-[85vw] md:min-w-[350px] shrink-0 snap-start bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer reveal";
+                            card.className = "w-[80vw] md:w-[320px] flex-none snap-center bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-shadow duration-300 hover:shadow-2xl cursor-pointer reveal";
                             card.style.transitionDelay = `${index * 100}ms`;
                             
                             card.innerHTML = `
