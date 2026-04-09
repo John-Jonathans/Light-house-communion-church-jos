@@ -92,7 +92,7 @@
             <p class="mt-4 text-gray-500">Loading Library...</p>
         </div>
 
-        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-12 w-full no-scrollbar hidden">
+        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-12 w-full no-scrollbar hidden overscroll-x-contain" style="-webkit-overflow-scrolling: touch;">
         </div>
 
     </main>
@@ -134,8 +134,8 @@
                             if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
 
                             const card = document.createElement('div');
-                            // NEW BUTTERY SMOOTH CARD CSS HERE
-                            card.className = "w-[80vw] md:w-[320px] flex-none snap-center bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-shadow duration-300 hover:shadow-2xl cursor-pointer reveal";
+                            // NEW SNAP-ALWAYS ADDED HERE FOR ONE-BY-ONE SCROLLING
+                            card.className = "w-[80vw] md:w-[320px] flex-none snap-center snap-always bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-shadow duration-300 hover:shadow-2xl cursor-pointer reveal";
                             card.style.transitionDelay = `${index * 100}ms`;
                             
                             card.innerHTML = `
