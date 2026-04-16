@@ -1,4 +1,4 @@
-Run it up to male it easier. ill deleate and paste the whole thing (<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -90,7 +90,6 @@ Run it up to male it easier. ill deleate and paste the whole thing (<!DOCTYPE ht
             <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
                 <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-church-dark flex items-center justify-center shadow-lg transition-colors border-2 border-church-gold/30">
                     <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" />
-
                 </div>
                 <span id="nav-logo-text" class="font-serif font-bold text-xl tracking-wide text-white">Lighthouse</span>
             </a>
@@ -324,4 +323,43 @@ Run it up to male it easier. ill deleate and paste the whole thing (<!DOCTYPE ht
                     link.classList.replace('text-gray-700', 'text-white/90');
                 });
                 
-                navB
+                navBtn.classList.replace('bg-church-orange', 'bg-white');
+                navBtn.classList.replace('text-white', 'text-church-orange');
+                mobileBtn.classList.replace('text-gray-800', 'text-white');
+            }
+        });
+
+        // --- 4. Mobile Menu Logic ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+            if(!mobileMenu.classList.contains('hidden')){
+                mobileBtn.classList.replace('text-white', 'text-gray-800');
+            }
+        });
+
+        // --- 5. Scroll Reveal Observer ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
