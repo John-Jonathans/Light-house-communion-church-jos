@@ -44,13 +44,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-        
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); } 
-            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
-        }
-        .drag-hint { animation: pulse-ring 2s infinite; }
 
         @keyframes slowZoom {
             0% { transform: scale(1); }
@@ -63,10 +56,6 @@
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Draggable Setup */
-        .draggable-card { touch-action: none; cursor: grab; z-index: 60; }
-        .draggable-card:active { cursor: grabbing; }
 
         /* Announcement Ticker */
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #111827; }
@@ -132,12 +121,12 @@
         
         <div class="absolute inset-0 w-full h-full bg-black">
             <div id="hero-slider" class="absolute inset-0 w-full h-full animate-alive">
-                <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100" />
-                <img src="https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=2073&auto=format&fit=crop" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" />
-                <img src="https://images.unsplash.com/photo-1544427920-c49ccfb85579?q=80&w=2073&auto=format&fit=crop" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" />
+                <img src="hero1.jpg" alt="Church Service" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100" onerror="this.src='https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop'" />
+                <img src="hero2.jpg" alt="Praise and Worship" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" onerror="this.src='https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=2073&auto=format&fit=crop'" />
+                <img src="hero3.jpg" alt="Congregation" class="slide-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0" onerror="this.src='https://images.unsplash.com/photo-1544427920-c49ccfb85579?q=80&w=2073&auto=format&fit=crop'" />
             </div>
-            <div class="absolute inset-0 bg-gradient-to-r from-church-orange/90 via-church-dark/60 to-transparent mix-blend-multiply z-0"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-church-dark via-transparent to-transparent z-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-church-orange/90 via-church-dark/70 to-transparent mix-blend-multiply z-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-church-dark via-church-dark/40 to-transparent z-0"></div>
         </div>
 
         <div class="relative z-10 h-full container mx-auto px-6 flex flex-col justify-center pb-12 md:pb-0">
@@ -167,23 +156,9 @@
                 </div>
             </div>
         </div>
-
-        <div id="draggable-card" class="draggable-card absolute bottom-0 right-2 md:right-20 lg:right-32 translate-y-[40%] transition-transform duration-75 ease-linear z-20">
-            <div class="group relative hover:scale-105 transition-transform duration-300">
-                <div class="absolute -top-3 -right-3 w-8 h-8 bg-church-orange rounded-full flex items-center justify-center z-50 shadow-lg drag-hint pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 9 18 12 15 15"></polyline><polyline points="9 19 12 22 15 19"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
-                </div>
-                <div class="relative w-36 h-48 md:w-64 md:h-80 lg:w-72 lg:h-96 rounded-lg overflow-hidden shadow-2xl border-4 border-white bg-gray-900">
-                    <img src="bishop1.jpg" alt="The Bishop" class="w-full h-full object-cover pointer-events-none opacity-90" />
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-3">
-                        <p class="text-white font-serif font-bold text-sm md:text-lg leading-tight">The Bishop</p>
-                        <a href="leadership.html" class="text-church-gold text-[10px] md:text-xs uppercase tracking-wider block mt-1 hover:text-white transition-colors pointer-events-auto">Tap for Bio &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    <section class="bg-white relative z-10 pt-32 pb-20 md:pt-40 lg:pt-48">
+
+    <section class="bg-white relative z-10 pt-20 pb-20 md:pt-32 lg:pt-40">
         <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div class="order-2 lg:order-1 reveal">
                 <h4 class="text-church-orange font-bold uppercase tracking-widest text-sm mb-2">Who We Are</h4>
@@ -242,7 +217,7 @@
     </footer>
 
     <script>
-        // --- 1. Fetch Dynamic Home Data (Modified to protect new animations) ---
+        // --- 1. Fetch Dynamic Home Data ---
         async function loadHomeData() {
             try {
                 const response = await fetch('home.json');
@@ -312,7 +287,7 @@
 
                 setTimeout(typeEffect, typeSpeed);
             }
-            setTimeout(typeEffect, 1000); // Start after 1 second
+            setTimeout(typeEffect, 1000); 
         });
 
         // --- 3. Navbar Scroll Logic ---
@@ -369,52 +344,7 @@
             }
         });
 
-        // --- 5. Vanilla JS Draggable Card Logic ---
-        const card = document.getElementById('draggable-card');
-        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
-
-        function dragStart(e) {
-            if (e.type === "touchstart") {
-                initialX = e.touches[0].clientX - xOffset;
-                initialY = e.touches[0].clientY - yOffset;
-            } else {
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
-            }
-            if (e.target.closest('#draggable-card')) isDragging = true;
-        }
-
-        function dragEnd(e) {
-            initialX = currentX; initialY = currentY; isDragging = false;
-        }
-
-        function drag(e) {
-            if (isDragging) {
-                e.preventDefault();
-                if (e.type === "touchmove") {
-                    currentX = e.touches[0].clientX - initialX;
-                    currentY = e.touches[0].clientY - initialY;
-                } else {
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                }
-                xOffset = currentX; yOffset = currentY;
-                setTranslate(currentX, currentY, card);
-            }
-        }
-
-        function setTranslate(xPos, yPos, el) {
-            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-        }
-
-        card.addEventListener("touchstart", dragStart, false);
-        card.addEventListener("touchend", dragEnd, false);
-        card.addEventListener("touchmove", drag, false);
-        card.addEventListener("mousedown", dragStart, false);
-        document.addEventListener("mouseup", dragEnd, false);
-        document.addEventListener("mousemove", drag, false);
-
-        // --- 6. Scroll Reveal Observer ---
+        // --- 5. Scroll Reveal Observer ---
         document.addEventListener("DOMContentLoaded", () => {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
             const observer = new IntersectionObserver((entries, observer) => {
