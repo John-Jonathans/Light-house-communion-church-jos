@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bishop's Blog - Lighthouse</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛪</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'church-gold': '#FFD700',
+                        'church-orange': '#6B21A8',
+                        'church-dark': '#111827',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans flex flex-col min-h-screen">
+
+    <nav class="fixed w-full z-40 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
+        <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
+            <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
+                <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-church-dark flex items-center justify-center shadow-lg transition-colors border-2 border-church-gold/30">
+                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" />
+                </div>
+                <span class="font-serif font-bold text-xl tracking-wide text-gray-900">Lighthouse</span>
+            </a>
+
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Home</a>
+                <a href="leadership.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">The Bishop</a>
+                <a href="books.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Library</a>
+                <a href="events.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Events</a>
+                <a href="blog.html" class="text-sm font-semibold tracking-wide text-church-orange transition-colors">Blog</a>
+                <a href="#join" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-church-orange text-white hover:bg-purple-800 shadow-lg hover:shadow-xl">Give Now</a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-gray-800 focus:outline-none p-2 z-50">
+                <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+                <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[35] flex-col justify-center items-center space-y-8 animate-fade-in pt-16">
+        <a href="index.html" class="text-2xl font-serif font-medium text-gray-900">Home</a>
+        <a href="leadership.html" class="text-2xl font-serif font-medium text-gray-900">The Bishop</a>
+        <a href="books.html" class="text-2xl font-serif font-medium text-gray-900">Library</a>
+        <a href="events.html" class="text-2xl font-serif font-medium text-gray-900">Events</a>
+        <a href="blog.html" class="text-2xl font-serif font-medium text-church-orange">Blog</a>
+        <a href="#join" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
+    </div>
+
+    <header class="bg-white shadow relative z-10 pt-32 pb-12">
+        <div class="container mx-auto px-6 text-center reveal">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-church-dark mb-4">The Bishop's Desk</h1>
+            <p class="text-gray-600 max-w-xl mx-auto">Writings, revelations, and reflections from our leadership to guide you through the week.</p>
+        </div>
+    </header>
+
+    <main class="w-full py-16 flex-grow container mx-auto px-6">
+        <div id="loading" class="text-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-church-orange mx-auto"></div>
+            <p class="mt-4 text-gray-500">Loading entries...</p>
+        </div>
+
+        <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            </div>
+    </main>
+
+    <div id="blog-modal" class="hidden fixed inset-0 z-[100] bg-church-dark/90 backdrop-blur-sm flex justify-center items-end md:items-center p-0 md:p-8 opacity-0 transition-opacity duration-300">
+        <div id="modal-content-container" class="bg-white w-full max-w-3xl h-[85vh] md:h-auto md:max-h-[85vh] rounded-t-3xl md:rounded-3xl overflow-y-auto shadow-2xl transform translate-y-full md:translate-y-0 md:scale-95 transition-all duration-300 flex flex-col">
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 p-5 md:p-6 flex justify-between items-center z-10">
+                <h3 id="modal-title" class="font-serif text-xl md:text-2xl font-bold text-church-dark truncate pr-4">Title</h3>
+                <button onclick="closeModal()" class="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900 rounded-full transition-colors flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="p-6 md:p-8 flex-grow">
+                <div class="flex items-center gap-3 mb-8 text-xs md:text-sm text-gray-500 font-semibold uppercase tracking-wider">
+                    <span id="modal-date" class="bg-gray-100 px-3 py-1 rounded-full">Date</span> 
+                    <span id="modal-author" class="text-church-orange font-bold">Author</span>
+                </div>
+                <div id="modal-body" class="text-gray-700 leading-relaxed md:text-lg">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-church-dark text-white pt-16 pb-8 border-t border-gray-800 mt-auto">
+        <div class="container mx-auto px-6 text-center text-xs md:text-sm text-gray-500">
+            <p>&copy; 2026 Lighthouse Communion Church International. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Modal Logic
+        function openModal(post) {
+            document.getElementById('modal-title').innerText = post.title;
+            document.getElementById('modal-date').innerText = post.date;
+            document.getElementById('modal-author').innerText = post.author || 'The Bishop';
+            
+            // Convert plain text line breaks to HTML paragraphs for proper reading format
+            const formattedContent = post.content.split('\\n').map(p => `<p class="mb-4">${p}</p>`).join('');
+            document.getElementById('modal-body').innerHTML = formattedContent;
+            
+            const modal = document.getElementById('blog-modal');
+            const container = document.getElementById('modal-content-container');
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+            
+            // Trigger smooth slide/fade in
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                container.classList.remove('translate-y-full', 'md:scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('blog-modal');
+            const container = document.getElementById('modal-content-container');
+            
+            modal.classList.add('opacity-0');
+            container.classList.add('translate-y-full', 'md:scale-95');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Load Blog Logic
+        async function loadBlog() {
+            const container = document.getElementById('blog-container');
+            const loading = document.getElementById('loading');
+
+            try {
+                const response = await fetch('blog.json');
+                loading.style.display = 'none';
+                container.classList.remove('hidden');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.posts && data.posts.length > 0) {
+                        data.posts.forEach((post, index) => {
+                            const card = document.createElement('div');
+                            card.className = "bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer reveal group flex flex-col h-full";
+                            card.style.transitionDelay = `${index * 100}ms`;
+                            
+                            // Attach click event to pass the entire post object to the modal
+                            card.onclick = () => openModal(post);
+                            
+                            card.innerHTML = `
+                                <div class="text-xs text-church-orange font-bold uppercase tracking-widest mb-3">${post.date}</div>
+                                <h3 class="text-2xl font-bold mb-4 text-church-dark font-serif group-hover:text-church-orange transition-colors leading-snug">${post.title}</h3>
+                                <p class="text-gray-600 mb-6 flex-grow line-clamp-3">${post.excerpt}</p>
+                                <div class="flex items-center text-sm font-semibold text-gray-900 group-hover:text-church-orange transition-colors mt-auto pt-4 border-t border-gray-50">
+                                    Read full post <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </div>
+                            `;
+                            container.appendChild(card);
+                        });
+                        initScrollReveal();
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function initScrollReveal() {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        }
+
+        loadBlog();
+    </script>
+</body>
+</html>
