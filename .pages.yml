@@ -1,107 +1,110 @@
-media: assets/images
-public_path: /assets/images
-
+media:
+  folder: /
 content:
-  - name: homepage
-    label: Home Page Settings
+  - name: settings
+    label: Homepage
     type: file
-    path: home.json
-    format: json
+    file: home.json
     fields:
       - name: hero_title
-        label: Main Headline
+        label: Hero Title (Use <br/> for line breaks)
         type: string
-      - name: hero_subtitle
-        label: Subheadline
-        type: string
-      - name: hero_image
-        label: Background Image
-        type: image
-      - name: announcement
-        label: Latest Announcement Banner
-        type: text
-
-  - name: leadership
-    label: Leadership Page
+  - name: blog
+    label: The Bishop's Blog
     type: file
-    path: leadership.json
-    format: json
+    file: blog.json
+    fields:
+      - name: posts
+        label: Blog Posts
+        type: list
+        fields:
+          - name: title
+            label: Post Title
+            type: string
+          - name: date
+            label: Date (e.g., April 18, 2026)
+            type: string
+          - name: author
+            label: Author
+            type: string
+          - name: excerpt
+            label: Short Preview/Excerpt
+            type: text
+          - name: content
+            label: Full Post Content (Use Enter for new paragraphs)
+            type: text
+  - name: leadership
+    label: The Bishop's Profile
+    type: file
+    file: leadership.json
     fields:
       - name: leader_name
-        label: Bishop Name
+        label: Name
         type: string
       - name: leader_title
-        label: Official Title
+        label: Title
         type: string
       - name: leader_image
-        label: Profile Photo
+        label: Profile Image
         type: image
       - name: leader_bio
         label: Biography
         type: text
-
   - name: library
-    label: Book Library
+    label: Library (Books)
     type: file
-    path: books.json
-    format: json
+    file: books.json
     fields:
       - name: books
-        label: Book List
-        type: object
-        list: true
+        label: Books
+        type: list
         fields:
           - name: title
             label: Book Title
             type: string
           - name: author
-            label: Author Name
+            label: Author
             type: string
           - name: cover
             label: Cover Image
             type: image
-
-  - name: events_list
-    label: Church Events
+  - name: events
+    label: Events & Schedule
     type: file
-    path: events.json
-    format: json
+    file: events.json
     fields:
       - name: schedule
         label: Weekly Schedule
-        type: object
-        list: true
+        type: list
         fields:
           - name: day
             label: Day
             type: string
-          - name: icon
-            label: Custom Icon
-            type: image
-          - name: title
-            label: Service Name
-            type: string
           - name: time
             label: Time
             type: string
+          - name: title
+            label: Title
+            type: string
           - name: description
             label: Description
-            type: string
-
+            type: text
+          - name: icon
+            label: Custom Icon (Optional)
+            type: image
       - name: events
         label: Special Events
-        type: object
-        list: true
+        type: list
         fields:
           - name: title
             label: Event Title
             type: string
           - name: date
-            label: Date Time
+            label: Date
             type: string
+          - name: image
+            label: Event Image
+            type: image
           - name: description
             label: Description
             type: text
-          - name: image
-            label: Event Flyer
-            type: image
