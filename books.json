@@ -1,29 +1,54 @@
 {
   "books": [
     {
-      "title": "Mystery of devil",
-      "author": "Nehemiah abel",
-      "cover": "/assets/images/photo-1544947950-fa07a98d237f.jpeg"
+      "title": "Dealing With Your Past",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "past.png"
     },
     {
-      "title": "healing hands",
-      "author": "John Jonathans"
+      "title": "The Wealthy Place",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "wealth.png"
     },
     {
-      "title": "king spokes",
-      "author": "John Jonathans"
+      "title": "Breaking Growth Barriers",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "growth.png"
     },
     {
-      "title": "great wizard of Oz ",
-      "author": "john Jonathans "
+      "title": "Bravest Man in Babylon",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "bravest.png"
     },
     {
-      "title": "the craziest ",
-      "author": "john Jonathans "
+      "title": "48 Invaluable Laws of Leadership & Growth",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "laws.png"
     },
     {
-      "title": "i am the man ",
-      "author": "John Jonathans"
+      "title": "God's Economy",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "economy.png"
+    },
+    {
+      "title": "Strategic Leadership",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "leadership.png"
+    },
+    {
+      "title": "Becoming An Exceptional Leader",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "leader.png"
+    },
+    {
+      "title": "The Art of Generosity",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "art.png"
+    },
+    {
+      "title": "The Burden of Leadership",
+      "author": "Dr. Bright Samuel Otso",
+      "cover": "burden.png"
     }
   ]
 }
