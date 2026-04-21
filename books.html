@@ -38,8 +38,6 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Reveal Animations */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
@@ -57,6 +55,7 @@
 
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="index.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Home</a>
+                <a href="about.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">About Us</a>
                 <a href="leadership.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">The Bishop</a>
                 <a href="books.html" class="text-sm font-semibold tracking-wide text-church-orange transition-colors">Library</a>
                 <a href="events.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Events</a>
@@ -73,6 +72,7 @@
 
     <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-8 animate-fade-in pt-16">
         <a href="index.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Home</a>
+        <a href="about.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">About Us</a>
         <a href="leadership.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">The Bishop</a>
         <a href="books.html" class="text-2xl font-serif font-medium text-church-orange">Library</a>
         <a href="events.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Events</a>
@@ -94,7 +94,7 @@
             <p class="mt-4 text-gray-500">Loading Library...</p>
         </div>
 
-        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-12 w-full no-scrollbar hidden overscroll-x-contain" style="-webkit-overflow-scrolling: touch;">
+        <div id="book-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-6 pb-12 w-full no-scrollbar hidden overscroll-x-contain" style="-webkit-overflow-scrolling: touch;">
         </div>
 
     </main>
@@ -104,7 +104,6 @@
     </footer>
 
     <script>
-        // --- Mobile Menu Logic ---
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -117,7 +116,6 @@
             closeIcon.classList.toggle('hidden');
         });
 
-        // --- Load Books Logic ---
         async function loadBooks() {
             const container = document.getElementById('book-container');
             const loading = document.getElementById('loading');
@@ -136,17 +134,17 @@
                             if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
 
                             const card = document.createElement('div');
-                            // NEW SNAP-ALWAYS ADDED HERE FOR ONE-BY-ONE SCROLLING
-                            card.className = "w-[80vw] md:w-[320px] flex-none snap-center snap-always bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col transition-shadow duration-300 hover:shadow-2xl cursor-pointer reveal";
+                            card.className = "w-[85vw] md:w-[380px] flex-none snap-center snap-always bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer reveal";
                             card.style.transitionDelay = `${index * 100}ms`;
                             
+                            // CHANGED: Aspect ratio container and object-contain to show full book
                             card.innerHTML = `
-                                <div class="h-64 bg-gray-100 relative overflow-hidden group">
-                                    ${imgPath ? `<img src="${imgPath}" alt="${book.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">` : '<div class="flex items-center justify-center h-full text-gray-400">No Image</div>'}
+                                <div class="w-full aspect-[3/4] bg-gray-50 relative group p-4 border-b border-gray-100 flex items-center justify-center rounded-t-2xl">
+                                    ${imgPath ? `<img src="${imgPath}" alt="${book.title}" class="max-w-full max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-105">` : '<div class="flex items-center justify-center h-full text-gray-400">No Image</div>'}
                                 </div>
-                                <div class="p-6 flex flex-col flex-grow">
-                                    <h3 class="text-xl font-bold mb-2 text-church-dark font-serif group-hover:text-church-orange transition-colors">${book.title || 'Untitled'}</h3>
-                                    <p class="text-gray-500 text-sm mb-4 line-clamp-3 flex-grow font-semibold uppercase tracking-wide">
+                                <div class="p-6 flex flex-col flex-grow text-center">
+                                    <h3 class="text-xl font-bold mb-2 text-church-dark font-serif group-hover:text-church-orange transition-colors leading-tight">${book.title || 'Untitled'}</h3>
+                                    <p class="text-gray-500 text-sm mb-4 flex-grow font-semibold uppercase tracking-wider">
                                         By ${book.author || 'Unknown'}
                                     </p>
                                 </div>
@@ -173,7 +171,6 @@
             }
         }
 
-        // --- Scroll Reveal Logic ---
         function initScrollReveal() {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
