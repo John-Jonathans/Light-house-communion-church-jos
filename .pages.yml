@@ -2,10 +2,13 @@ media:
   folder: /
 content:
   - name: settings
-    label: Home Page Settings
+    label: Global & Home Settings
     type: file
     file: home.json
     fields:
+      - name: church_name
+        label: Church Name (Next to Logo)
+        type: string
       - name: main_headline
         label: Main Headline
         type: string
