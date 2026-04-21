@@ -9,6 +9,20 @@ content:
       - name: hero_title
         label: Hero Title (Use <br/> for line breaks)
         type: string
+  - name: about
+    label: About Us Page
+    type: file
+    file: about.json
+    fields:
+      - name: mission_title
+        label: Mission Headline (Use <br/> for line breaks)
+        type: string
+      - name: mission_text
+        label: Mission Description
+        type: text
+      - name: video_url
+        label: YouTube Video Embed Link
+        type: string
   - name: blog
     label: The Bishop's Blog
     type: file
