@@ -2,13 +2,22 @@ media:
   folder: /
 content:
   - name: settings
-    label: Homepage
+    label: Home Page Settings
     type: file
     file: home.json
     fields:
-      - name: hero_title
-        label: Hero Title (Use <br/> for line breaks)
+      - name: main_headline
+        label: Main Headline
         type: string
+      - name: subheadline
+        label: Subheadline
+        type: string
+      - name: background_image
+        label: Background Image
+        type: image
+      - name: announcement
+        label: Latest Announcement Banner (Leave blank to hide)
+        type: text
   - name: about
     label: About Us Page
     type: file
