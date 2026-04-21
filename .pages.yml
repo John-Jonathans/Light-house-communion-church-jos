@@ -133,4 +133,4 @@ content:
             type: image
           - name: description
             label: Description
-            type: text
+            type: text 
