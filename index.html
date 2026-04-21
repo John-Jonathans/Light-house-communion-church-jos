@@ -18,7 +18,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
         
-        /* Ticker CSS */
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #111827; position: absolute; top: 0; left: 0; z-index: 60; }
         .ticker-content { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -72,7 +71,7 @@
 
     <div class="relative w-full h-screen flex-grow bg-church-dark overflow-hidden flex flex-col justify-center">
         <div class="absolute inset-0 w-full h-full bg-black">
-            <img id="bg-img" src="hero1.jpg" class="absolute inset-0 w-full h-full object-cover opacity-80 scale-105" />
+            <img id="bg-img" src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-80 scale-105" />
             <div class="absolute inset-0 bg-gradient-to-r from-church-orange/80 via-church-dark/80 to-transparent mix-blend-multiply z-0"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-church-dark via-church-dark/40 to-transparent z-0"></div>
         </div>
@@ -103,17 +102,29 @@
     </div>
 
     <script>
-        // Load Home Data & Ticker Logic
         async function loadHomeData() {
+            const titleEl = document.getElementById('hero-title');
             try {
                 const response = await fetch('home.json');
                 if (response.ok) {
                     const data = await response.json();
                     
-                    if (data.main_headline) document.getElementById('hero-title').innerHTML = data.main_headline;
+                    // Update Church Name if provided
+                    if (data.church_name && data.church_name.trim() !== "") {
+                        document.getElementById('nav-logo-text').textContent = data.church_name;
+                    }
+                    
+                    // Update Headline with Fallback
+                    if (data.main_headline && data.main_headline.trim() !== "") {
+                        titleEl.innerHTML = data.main_headline;
+                    } else {
+                        titleEl.innerHTML = "Welcome Home";
+                    }
+
                     if (data.subheadline) document.getElementById('hero-subtitle').innerHTML = data.subheadline;
                     
-                    if (data.background_image) {
+                    // Update Background Image securely
+                    if (data.background_image && data.background_image.trim() !== "") {
                         let imgPath = data.background_image;
                         if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
                         document.getElementById('bg-img').src = imgPath;
@@ -124,12 +135,14 @@
                         let repeatedText = Array(4).fill(data.announcement).join("   •   ") + "   •   ";
                         document.getElementById('announcement-text-1').textContent = repeatedText;
                         document.getElementById('announcement-text-2').textContent = repeatedText;
-                        
-                        // Push navbar down so it doesn't overlap the ticker
                         document.getElementById('navbar').classList.replace('top-0', 'top-7');
                     }
                 }
-            } catch (error) { console.error("Error loading home data:", error); }
+            } catch (error) { 
+                console.error("Error loading home data:", error); 
+                // Safety net so it never gets stuck on "Loading..."
+                titleEl.innerHTML = "Welcome Home";
+            }
         }
         loadHomeData();
 
