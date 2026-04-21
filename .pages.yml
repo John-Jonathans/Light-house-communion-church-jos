@@ -2,12 +2,12 @@ media:
   folder: /
 content:
   - name: settings
-    label: Global & Home Settings
+    label: Global Settings
     type: file
     file: home.json
     fields:
       - name: church_name
-        label: Church Name (Next to Logo)
+        label: Church Name
         type: string
       - name: main_headline
         label: Main Headline
@@ -19,7 +19,7 @@ content:
         label: Background Image
         type: image
       - name: announcement
-        label: Latest Announcement Banner (Leave blank to hide)
+        label: Top Banner Text
         type: text
   - name: about
     label: About Us Page
@@ -27,16 +27,16 @@ content:
     file: about.json
     fields:
       - name: mission_title
-        label: Mission Headline (Use <br/> for line breaks)
+        label: Mission Headline
         type: string
       - name: mission_text
-        label: Mission Description
+        label: Mission Text
         type: text
       - name: video_url
-        label: YouTube Video Embed Link
+        label: YouTube Link
         type: string
   - name: blog
-    label: The Bishop's Blog
+    label: The Blog
     type: file
     file: blog.json
     fields:
@@ -48,19 +48,19 @@ content:
             label: Post Title
             type: string
           - name: date
-            label: Date (e.g., April 18, 2026)
+            label: Date
             type: string
           - name: author
             label: Author
             type: string
           - name: excerpt
-            label: Short Preview/Excerpt
+            label: Short Preview
             type: text
           - name: content
-            label: Full Post Content (Use Enter for new paragraphs)
+            label: Full Content
             type: text
   - name: leadership
-    label: The Bishop's Profile
+    label: The Bishop
     type: file
     file: leadership.json
     fields:
@@ -77,7 +77,7 @@ content:
         label: Biography
         type: text
   - name: library
-    label: Library (Books)
+    label: Book Library
     type: file
     file: books.json
     fields:
@@ -86,7 +86,7 @@ content:
         type: list
         fields:
           - name: title
-            label: Book Title
+            label: Title
             type: string
           - name: author
             label: Author
@@ -95,7 +95,7 @@ content:
             label: Cover Image
             type: image
   - name: events
-    label: Events & Schedule
+    label: Events
     type: file
     file: events.json
     fields:
@@ -116,7 +116,7 @@ content:
             label: Description
             type: text
           - name: icon
-            label: Custom Icon (Optional)
+            label: Icon Image
             type: image
       - name: events
         label: Special Events
@@ -133,4 +133,4 @@ content:
             type: image
           - name: description
             label: Description
-            type: text 
+            type: text
