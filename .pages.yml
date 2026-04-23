@@ -2,8 +2,10 @@ media:
   folder: /
 content:
   - name: settings
-    label: Home Settings
+    label: home
     type: file
     file: home.json
     fields:
-      - name: church_name
+     - name: church_name
+       type: string
+    
