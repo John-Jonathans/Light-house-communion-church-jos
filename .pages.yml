@@ -6,4 +6,17 @@ content:
     path: home.json
     fields:
       - name: church_name
+        label: Church Name
         type: string
+      - name: main_headline
+        label: Main Headline
+        type: string
+      - name: subheadline
+        label: Subheadline
+        type: string
+      - name: background_image
+        label: Background Image
+        type: image
+      - name: announcement
+        label: Top Banner Text
+        type: text
