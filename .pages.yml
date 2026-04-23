@@ -58,4 +58,4 @@ content:
             type: text
           - name: content
             label: Full Content
-            type: text
+            type: text 
