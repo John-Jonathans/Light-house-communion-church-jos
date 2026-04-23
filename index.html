@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lighthouse Communion Church - Home</title>
+    <title id="page-title">Lighthouse - Home</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛪</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,7 +37,7 @@
             
             <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
                 <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-church-dark flex items-center justify-center shadow-lg transition-colors border-2 border-church-gold/30">
-                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" />
+                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" onerror="this.src='https://via.placeholder.com/150/111827/FFD700?text=L'" />
                 </div>
                 <span id="nav-logo-text" class="font-serif font-bold text-xl tracking-wide text-white">Lighthouse</span>
             </a>
@@ -49,7 +49,7 @@
                 <a href="books.html" class="nav-link text-sm font-semibold tracking-wide text-white/90 hover:text-church-orange transition-colors">Library</a>
                 <a href="events.html" class="nav-link text-sm font-semibold tracking-wide text-white/90 hover:text-church-orange transition-colors">Events</a>
                 <a href="blog.html" class="nav-link text-sm font-semibold tracking-wide text-white/90 hover:text-church-orange transition-colors">Blog</a>
-                <a href="#join" id="nav-btn" class="px-4 py-2 rounded-full text-sm font-bold transition-all bg-white text-church-orange hover:bg-gray-100 hover:shadow-lg hover:-translate-y-0.5">Give Now</a>
+                <a href="give.html" id="nav-btn" class="px-4 py-2 rounded-full text-sm font-bold transition-all bg-white text-church-orange hover:bg-gray-100 hover:shadow-lg hover:-translate-y-0.5">Give Now</a>
             </div>
 
             <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none relative z-50">
@@ -65,7 +65,7 @@
             <a href="books.html" class="text-2xl font-serif text-gray-800 hover:text-church-orange">Library</a>
             <a href="events.html" class="text-2xl font-serif text-gray-800 hover:text-church-orange">Events</a>
             <a href="blog.html" class="text-2xl font-serif text-gray-800 hover:text-church-orange">Blog</a>
-            <a href="#join" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
+            <a href="give.html" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
         </div>
     </nav>
 
@@ -105,13 +105,17 @@
         async function loadHomeData() {
             const titleEl = document.getElementById('hero-title');
             try {
-                const response = await fetch('home.json');
+                // THE CACHE BUSTER: Appends a unique timestamp so the browser NEVER loads old data!
+                const cacheBuster = new Date().getTime();
+                const response = await fetch('home.json?v=' + cacheBuster);
+                
                 if (response.ok) {
                     const data = await response.json();
                     
-                    // Update Church Name if provided
+                    // Update Church Name (Navbar + Page Tab)
                     if (data.church_name && data.church_name.trim() !== "") {
                         document.getElementById('nav-logo-text').textContent = data.church_name;
+                        document.getElementById('page-title').textContent = data.church_name + " - Home";
                     }
                     
                     // Update Headline with Fallback
@@ -123,13 +127,14 @@
 
                     if (data.subheadline) document.getElementById('hero-subtitle').innerHTML = data.subheadline;
                     
-                    // Update Background Image securely
+                    // Update Background Image
                     if (data.background_image && data.background_image.trim() !== "") {
                         let imgPath = data.background_image;
                         if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
                         document.getElementById('bg-img').src = imgPath;
                     }
                     
+                    // Update Top Banner
                     if (data.announcement && data.announcement.trim() !== "") {
                         document.getElementById('announcement-banner').classList.remove('hidden');
                         let repeatedText = Array(4).fill(data.announcement).join("   •   ") + "   •   ";
@@ -140,7 +145,6 @@
                 }
             } catch (error) { 
                 console.error("Error loading home data:", error); 
-                // Safety net so it never gets stuck on "Loading..."
                 titleEl.innerHTML = "Welcome Home";
             }
         }
