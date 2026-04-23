@@ -1,5 +1,3 @@
-media:
-  folder: /
 content:
   - name: settings
     label: Home Settings
