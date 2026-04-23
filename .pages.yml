@@ -7,4 +7,4 @@ content:
     file: home.json
     fields:
       - name: church_name
-        type: string
+        type: string 
