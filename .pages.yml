@@ -1,0 +1,61 @@
+media:
+  folder: /
+content:
+  - name: settings
+    label: Home Settings
+    type: file
+    file: home.json
+    fields:
+      - name: church_name
+        label: Church Name
+        type: string
+      - name: main_headline
+        label: Main Headline
+        type: string
+      - name: subheadline
+        label: Subheadline
+        type: string
+      - name: background_image
+        label: Background Image
+        type: image
+      - name: announcement
+        label: Top Banner Text
+        type: text
+  - name: about
+    label: About Us
+    type: file
+    file: about.json
+    fields:
+      - name: mission_title
+        label: Mission Headline
+        type: string
+      - name: mission_text
+        label: Mission Text
+        type: text
+      - name: video_url
+        label: YouTube Link
+        type: string
+  - name: blog
+    label: The Blog
+    type: file
+    file: blog.json
+    fields:
+      - name: posts
+        label: Blog Posts
+        type: list
+        fields:
+          - name: title
+            label: Post Title
+            type: string
+          - name: date
+            label: Date
+            type: string
+          - name: author
+            label: Author
+            type: string
+          - name: excerpt
+            label: Short Preview
+            type: text
+          - name: content
+            label: Full Content
+            type: text
