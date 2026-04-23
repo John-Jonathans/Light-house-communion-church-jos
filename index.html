@@ -76,7 +76,7 @@
             
             <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=2000&q=80" class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 scale-105" />
             
-            <img src="https://images.unsplash.com/photo-1445116572660-236099cecd07?auto=format&fit=crop&w=2000&q=80" class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 scale-105" />
+            <img src="https://images.unsplash.com/photo-1478147424096-d98f77271e8d?auto=format&fit=crop&w=2000&q=80" class="hero-slide absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 scale-105" />
             
             <div class="absolute inset-0 bg-gradient-to-r from-church-orange/80 via-church-dark/80 to-transparent mix-blend-multiply z-0"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-church-dark via-church-dark/40 to-transparent z-0"></div>
@@ -89,7 +89,7 @@
                 </div>
                 
                 <h1 id="hero-title" class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 md:mb-6 shadow-sm drop-shadow-lg">
-                    Loading...
+                    Welcome Home
                 </h1>
                 
                 <p id="hero-subtitle" class="text-lg md:text-2xl text-church-gold font-medium leading-relaxed mb-8 max-w-lg italic">
@@ -125,8 +125,6 @@
                     
                     if (data.main_headline && data.main_headline.trim() !== "") {
                         titleEl.innerHTML = data.main_headline;
-                    } else {
-                        titleEl.innerHTML = "Welcome Home";
                     }
 
                     if (data.subheadline) document.getElementById('hero-subtitle').innerHTML = data.subheadline;
