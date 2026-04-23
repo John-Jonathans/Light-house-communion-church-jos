@@ -1,10 +1,9 @@
-media:
-  folder: /
+media: media
 content:
   - name: settings
     label: Home
     type: file
-    file: home.json
+    path: home.json
     fields:
       - name: church_name
         type: string
