@@ -20,3 +20,41 @@ content:
       - name: announcement
         label: Top Banner Text
         type: text
+  - name: about
+    label: About Us
+    type: file
+    path: about.json
+    fields:
+      - name: mission_title
+        label: Mission Headline
+        type: string
+      - name: mission_text
+        label: Mission Text
+        type: text
+      - name: video_url
+        label: YouTube Link
+        type: string
+  - name: blog
+    label: The Blog
+    type: file
+    path: blog.json
+    fields:
+      - name: posts
+        label: Blog Posts
+        type: list
+        fields:
+          - name: title
+            label: Post Title
+            type: string
+          - name: date
+            label: Date
+            type: string
+          - name: author
+            label: Author
+            type: string
+          - name: excerpt
+            label: Short Preview
+            type: text
+          - name: content
+            label: Full Content
+            type: text
