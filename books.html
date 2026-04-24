@@ -121,7 +121,10 @@
             const loading = document.getElementById('loading');
 
             try {
-                const response = await fetch('books.json');
+                // Cache-Buster added to ensure fresh data loads every time
+                const cacheBuster = new Date().getTime();
+                const response = await fetch('books.json?v=' + cacheBuster);
+                
                 loading.style.display = 'none';
                 container.classList.remove('hidden');
 
@@ -134,10 +137,10 @@
                             if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
 
                             const card = document.createElement('div');
-                            card.className = "w-[85vw] md:w-[380px] flex-none snap-center snap-always bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer reveal";
+                            // TITANIUM ARMOR FIX: min-w and flex-shrink-0 strictly enforce dimensions for Kiwi/Blink
+                            card.className = "w-[85vw] min-w-[85vw] md:w-[380px] md:min-w-[380px] flex-shrink-0 snap-center snap-always bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer reveal";
                             card.style.transitionDelay = `${index * 100}ms`;
                             
-                            // CHANGED: Aspect ratio container and object-contain to show full book
                             card.innerHTML = `
                                 <div class="w-full aspect-[3/4] bg-gray-50 relative group p-4 border-b border-gray-100 flex items-center justify-center rounded-t-2xl">
                                     ${imgPath ? `<img src="${imgPath}" alt="${book.title}" class="max-w-full max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-105">` : '<div class="flex items-center justify-center h-full text-gray-400">No Image</div>'}
