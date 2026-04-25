@@ -1,5 +1,22 @@
 {
-  "mission_title": "Building a legacy of  love and care.",
-  "mission_text": "At Lighthouse Communion Church, we believe in the transformative power of grace. Our mission we pastor bright is to raise a generation that embodies power through service, character through integrity, and charisma through the Holy Spirit.",
-  "video_url": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  "mission_title": "Building a legacy of love and care.",
+  "mission_text": "At Lighthouse Communion Church, we believe in the transformative power of grace. Our mission with Pastor Bright is to raise a generation that embodies power through service, character through integrity, and charisma through the Holy Spirit.",
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "activities": [
+    {
+      "emoji": "👶",
+      "title": "Children's Ministry",
+      "description": "Nurturing faith in our youngest members."
+    },
+    {
+      "emoji": "🤝",
+      "title": "Community Outreach",
+      "description": "Serving our neighbors with love."
+    },
+    {
+      "emoji": "🎵",
+      "title": "Worship Arts",
+      "description": "Expressing devotion through music and art."
+    }
+  ]
 }
