@@ -1,33 +1,22 @@
 {
-  "schedule": [
+  "mission_title": "Building a legacy of love and care.",
+  "mission_text": "At Lighthouse Communion Church, we believe in the transformative power of grace. Our mission with Pastor Bright is to raise a generation that embodies power through service, character through integrity, and charisma through the Holy Spirit.",
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "activities": [
     {
-      "day": "Sunday",
-      "title": "Worship Service",
-      "time": "10:00 AM",
-      "description": "A time of power, praise, and the Word."
+      "emoji": "👶",
+      "title": "Children's Ministry",
+      "description": "Nurturing faith in our youngest members."
     },
     {
-      "day": "Wednesday",
-      "title": "Bible Study",
-      "time": "9:00 PM",
-      "description": "Digging deep into scriptures for spiritual growth."
+      "emoji": "🤝",
+      "title": "Community Outreach",
+      "description": "Serving our neighbors with love."
     },
     {
-      "day": "Friday",
-      "title": "Prayer Meeting",
-      "time": "6:00 PM",
-      "description": "Communion and intercession for the nations."
-    },
-    {
-      "title": "t"
-    }
-  ],
-  "events": [
-    {
-      "title": "Youth Praise Night",
-      "date": "Friday, March 15th at 6:00 PM",
-      "description": "the lord is good ",
-      "image": "/assets/images/Screenshot_20260226-225322.jpg"
+      "emoji": "🎵",
+      "title": "Worship Arts",
+      "description": "Expressing devotion through music and art."
     }
   ]
 }
