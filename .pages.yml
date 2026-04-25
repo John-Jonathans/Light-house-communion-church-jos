@@ -47,6 +47,43 @@ content:
           - name: description
             label: Short Description
             type: string
+  - name: events
+    label: Events & Gatherings
+    type: file
+    path: events.json
+    fields:
+      - name: weekly_gatherings
+        label: Weekly Gatherings
+        type: list
+        fields:
+          - name: day
+            label: Day
+            type: string
+          - name: name
+            label: Service Name
+            type: string
+          - name: time
+            label: Time
+            type: string
+          - name: description
+            label: Description
+            type: string
+      - name: special_events
+        label: Special Events
+        type: list
+        fields:
+          - name: title
+            label: Event Title
+            type: string
+          - name: date
+            label: Date & Time
+            type: string
+          - name: description
+            label: Description
+            type: string
+          - name: image
+            label: Event Flyer
+            type: image
   - name: blog
     label: The Blog
     type: file
