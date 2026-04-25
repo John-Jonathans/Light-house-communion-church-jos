@@ -24,7 +24,7 @@
         <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
             <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
                 <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-church-dark flex items-center justify-center shadow-lg transition-colors border-2 border-church-gold/30">
-                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" />
+                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" onerror="this.src='https://via.placeholder.com/150/111827/FFD700?text=L'" />
                 </div>
                 <span class="font-serif font-bold text-xl tracking-wide text-gray-900">Lighthouse</span>
             </a>
@@ -97,23 +97,8 @@
                 <h3 class="font-serif text-3xl font-bold text-church-dark">Connect & Grow</h3>
                 <div class="w-20 h-1 bg-church-orange mx-auto mt-4 rounded-full"></div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-sm border-t-4 border-transparent hover:border-church-orange transition-all duration-300 hover:-translate-y-2 hover:shadow-xl reveal cursor-pointer">
-                    <div class="text-4xl mb-4 transform transition-transform duration-300 hover:scale-110">👶</div>
-                    <h4 class="font-bold text-xl mb-2 text-church-dark">Children's Ministry</h4>
-                    <p class="text-gray-600 text-sm">Nurturing faith in our youngest members.</p>
+            <div id="activities-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-sm border-t-4 border-transparent hover:border-church-orange transition-all duration-300 hover:-translate-y-2 hover:shadow-xl reveal delay-100 cursor-pointer">
-                    <div class="text-4xl mb-4 transform transition-transform duration-300 hover:scale-110">🤝</div>
-                    <h4 class="font-bold text-xl mb-2 text-church-dark">Community Outreach</h4>
-                    <p class="text-gray-600 text-sm">Serving our neighbors with love.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-sm border-t-4 border-transparent hover:border-church-orange transition-all duration-300 hover:-translate-y-2 hover:shadow-xl reveal delay-200 cursor-pointer">
-                    <div class="text-4xl mb-4 transform transition-transform duration-300 hover:scale-110">🎵</div>
-                    <h4 class="font-bold text-xl mb-2 text-church-dark">Worship Arts</h4>
-                    <p class="text-gray-600 text-sm">Expressing devotion through music and art.</p>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -134,23 +119,68 @@
             closeIcon.classList.toggle('hidden');
         });
 
+        // Smart YouTube Parser
+        function extractYouTubeID(url) {
+            let videoID = '';
+            if (url.includes('youtube.com/watch?v=')) {
+                videoID = url.split('v=')[1].split('&')[0];
+            } else if (url.includes('youtu.be/')) {
+                videoID = url.split('youtu.be/')[1].split('?')[0];
+            } else if (url.includes('youtube.com/embed/')) {
+                videoID = url.split('embed/')[1].split('?')[0];
+            }
+            return videoID;
+        }
+
         // Load About Us Data from JSON
         async function loadAboutData() {
             try {
-                const response = await fetch('about.json');
+                // Cache-buster added for instant updates
+                const cacheBuster = new Date().getTime();
+                const response = await fetch('about.json?v=' + cacheBuster);
+                
                 if (response.ok) {
                     const data = await response.json();
+                    
                     if (data.mission_title) document.getElementById('mission-title').innerHTML = data.mission_title;
                     if (data.mission_text) document.getElementById('mission-text').innerHTML = data.mission_text.replace(/\n/g, '<br/>');
-                    if (data.video_url) document.getElementById('about-video').src = data.video_url;
+                    
+                    // Smart YouTube Integration
+                    if (data.video_url && data.video_url.trim() !== "") {
+                        const ytID = extractYouTubeID(data.video_url);
+                        if (ytID) {
+                            document.getElementById('about-video').src = `https://www.youtube.com/embed/${ytID}`;
+                        }
+                    }
+
+                    // Dynamic Activities Integration
+                    const actContainer = document.getElementById('activities-container');
+                    if (data.activities && data.activities.length > 0) {
+                        actContainer.innerHTML = ''; 
+                        data.activities.forEach((act, index) => {
+                            const delay = index * 100;
+                            actContainer.innerHTML += `
+                                <div class="bg-white p-8 rounded-xl shadow-sm border-t-4 border-transparent hover:border-church-orange transition-all duration-300 hover:-translate-y-2 hover:shadow-xl reveal cursor-pointer" style="transition-delay: ${delay}ms;">
+                                    <div class="text-4xl mb-4 transform transition-transform duration-300 hover:scale-110">${act.emoji || '✨'}</div>
+                                    <h4 class="font-bold text-xl mb-2 text-church-dark">${act.title || 'Activity'}</h4>
+                                    <p class="text-gray-600 text-sm">${act.description || ''}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        // Fallback if no activities are added in CMS yet
+                        actContainer.innerHTML = `<div class="col-span-3 text-center text-gray-500 py-8">Open Pages CMS to add your activities!</div>`;
+                    }
+
+                    // Re-initialize animations after loading data
+                    initScrollReveal();
                 }
             } catch (error) {
                 console.error("Error loading about data:", error);
             }
         }
-        loadAboutData();
-
-        document.addEventListener("DOMContentLoaded", () => {
+        
+        function initScrollReveal() {
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -160,8 +190,10 @@
                 });
             }, { root: null, rootMargin: '0px', threshold: 0.15 });
 
-            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-        });
+            document.querySelectorAll('.reveal:not(.active)').forEach((el) => observer.observe(el));
+        }
+
+        loadAboutData();
     </script>
 </body>
 </html>
