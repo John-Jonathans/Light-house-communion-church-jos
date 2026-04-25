@@ -1,26 +1,4 @@
-media: media
-content:
-  - name: settings
-    label: Home
-    type: file
-    path: home.json
-    fields:
-      - name: church_name
-        label: Church Name
-        type: string
-      - name: main_headline
-        label: Main Headline
-        type: string
-      - name: subheadline
-        label: Subheadline
-        type: string
-      - name: background_image
-        label: Background Image
-        type: image
-      - name: announcement
-        label: Top Banner Text
-        type: text
-  - name: about
+- name: about
     label: About Us
     type: file
     path: about.json
@@ -34,27 +12,16 @@ content:
       - name: video_url
         label: YouTube Link
         type: string
-  - name: blog
-    label: The Blog
-    type: file
-    path: blog.json
-    fields:
-      - name: posts
-        label: Blog Posts
+      - name: activities
+        label: Connect & Grow Activities
         type: list
         fields:
+          - name: emoji
+            label: Icon (Emoji)
+            type: string
           - name: title
-            label: Post Title
+            label: Activity Title
             type: string
-          - name: date
-            label: Date
+          - name: description
+            label: Short Description
             type: string
-          - name: author
-            label: Author
-            type: string
-          - name: excerpt
-            label: Short Preview
-            type: text
-          - name: content
-            label: Full Content
-            type: text
