@@ -36,7 +36,8 @@ content:
         type: string
       - name: activities
         label: Connect & Grow Activities
-        type: list
+        type: object
+        list: true
         fields:
           - name: emoji
             label: Icon (Emoji)
@@ -54,7 +55,8 @@ content:
     fields:
       - name: weekly_gatherings
         label: Weekly Gatherings
-        type: list
+        type: object
+        list: true
         fields:
           - name: day
             label: Day
@@ -67,10 +69,11 @@ content:
             type: string
           - name: description
             label: Description
-            type: string
+            type: text
       - name: special_events
         label: Special Events
-        type: list
+        type: object
+        list: true
         fields:
           - name: title
             label: Event Title
@@ -80,7 +83,7 @@ content:
             type: string
           - name: description
             label: Description
-            type: string
+            type: text
           - name: image
             label: Event Flyer
             type: image
@@ -91,7 +94,8 @@ content:
     fields:
       - name: posts
         label: Blog Posts
-        type: list
+        type: object
+        list: true
         fields:
           - name: title
             label: Post Title
