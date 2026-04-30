@@ -112,3 +112,26 @@ content:
           - name: content
             label: Full Content
             type: text
+  - name: give
+    label: Giving & Donations
+    type: file
+    path: give.json
+    fields:
+      - name: title
+        label: Headline
+        type: string
+      - name: message
+        label: Giving Message
+        type: text
+      - name: payment_link
+        label: Online Payment Link (Paystack/Flutterwave)
+        type: string
+      - name: bank_name
+        label: Bank Name
+        type: string
+      - name: account_name
+        label: Account Name
+        type: string
+      - name: account_number
+        label: Account Number
+        type: string
