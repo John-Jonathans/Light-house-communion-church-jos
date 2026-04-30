@@ -8,9 +8,17 @@
   "quote": "My heart beats for the restoration of dignity to the body of Christ. We are not just called to gather; we are called to be a lighthouse in a dark world, providing safety, truth, and communion.",
   "facebook_link": "#",
   "slider_images": [
-    { "photo": "bishop1.jpg" },
-    { "photo": "bishopfacebook.jpg" },
-    { "photo": "bishopndwife1.jpg" },
-    { "photo": "bishopndwife2.jpg" }
+    {
+      "photo": "bishop1.jpg"
+    },
+    {
+      "photo": "bishopfacebook.jpg"
+    },
+    {
+      "photo": "bishopndwife1.jpg"
+    },
+    {
+      "photo": "/media/Image_fx (1).jpg"
+    }
   ]
 }
