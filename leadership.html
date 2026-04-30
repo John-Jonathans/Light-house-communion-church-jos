@@ -19,7 +19,6 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
-        /* Your Custom Dot Styles */
         .dot { transition: all 0.3s ease; opacity: 0.5; transform: scale(0.8); }
         .dot.active { opacity: 1; transform: scale(1.2); background-color: #FFD700; }
         
@@ -28,7 +27,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased font-sans flex flex-col min-h-screen">
 
-    <!-- Standard Navbar -->
     <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
         <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
             <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
@@ -55,7 +53,6 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-6 pt-16">
         <a href="index.html" class="text-2xl font-serif font-medium text-gray-900">Home</a>
         <a href="about.html" class="text-2xl font-serif font-medium text-gray-900">About Us</a>
@@ -66,7 +63,6 @@
         <a href="give.html" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
     </div>
 
-    <!-- Header -->
     <header class="bg-church-dark pt-32 pb-16 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="container mx-auto px-6 text-center relative z-10 reveal">
@@ -75,25 +71,21 @@
         </div>
     </header>
 
-    <!-- Editorial Layout -->
     <section class="py-16 md:py-24 bg-white relative z-20 flex-grow">
         <div class="container mx-auto px-6 max-w-6xl">
             <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
                 
-                <!-- Left Column: Your Custom Image Slider & Titles -->
                 <div class="w-full lg:w-5/12 reveal relative lg:sticky lg:top-28">
                     
-                    <!-- YOUR Slider Box -->
                     <div class="relative w-full aspect-[4/5] rounded-2xl shadow-2xl border-4 border-gray-100 bg-gray-900 group overflow-hidden mb-6">
                         <div id="gallery-container" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth h-full w-full no-scrollbar">
-                            <!-- JS injects images here -->
+                            <!-- JS injects dynamic images here -->
                         </div>
                         
                         <div id="gallery-dots" class="absolute bottom-24 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
-                            <!-- JS injects dots here -->
+                            <!-- JS injects dynamic dots here -->
                         </div>
 
-                        <!-- Gradient for text readability -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10"></div>
                         
                         <div class="absolute bottom-6 left-6 right-6 text-white z-20 pointer-events-none">
@@ -102,7 +94,6 @@
                         </div>
                     </div>
                     
-                    <!-- Action Buttons -->
                     <div class="flex flex-col gap-4">
                         <a href="books.html" class="w-full py-4 bg-church-dark text-white rounded-xl font-bold text-center hover:bg-gray-800 transition-colors shadow-lg flex items-center justify-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -115,7 +106,6 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Biography -->
                 <div class="w-full lg:w-7/12 reveal" style="transition-delay: 150ms;">
                     <h3 id="bio-heading" class="font-serif text-3xl md:text-4xl font-bold text-church-dark mb-8 leading-tight">Loading...</h3>
                     
@@ -138,7 +128,6 @@
     </footer>
 
     <script>
-        // --- Mobile Menu Logic ---
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -149,7 +138,6 @@
             menuIcon.classList.toggle('hidden'); closeIcon.classList.toggle('hidden');
         });
 
-        // --- Your Custom Gallery Logic Variables ---
         let currentIndex = 0;
         let autoScrollTimer;
         let isManualScrolling = false;
@@ -189,7 +177,6 @@
 
         function stopAutoScroll() { clearInterval(autoScrollTimer); }
 
-        // --- Fetch CMS Data + Your Images ---
         async function loadBishopData() {
             try {
                 const cacheBuster = new Date().getTime();
@@ -198,7 +185,6 @@
                 if (response.ok) {
                     const data = await response.json();
                     
-                    // Populate Text
                     if (data.header_title) document.getElementById('header-title').textContent = data.header_title;
                     if (data.header_subtitle) document.getElementById('header-subtitle').textContent = data.header_subtitle;
                     if (data.bishop_name) document.getElementById('bishop-name').textContent = data.bishop_name;
@@ -210,16 +196,24 @@
                         document.getElementById('facebook-btn').href = data.facebook_link;
                     }
 
-                    // Populate Your Slider
-                    const existingImages = [
-                        "bishop1.jpg",
-                        "bishopfacebook.jpg",
-                        "bishopndwife1.jpg",
-                        "bishopndwife2.jpg"
-                    ];
+                    // Dynamic Slider Injector
+                    let imagesToLoad = [];
+                    if (data.slider_images && data.slider_images.length > 0) {
+                        imagesToLoad = data.slider_images.map(item => {
+                            let imgPath = item.photo;
+                            if (imgPath && imgPath.startsWith('/')) imgPath = imgPath.substring(1);
+                            return imgPath || '';
+                        }).filter(img => img !== ''); // Remove any empty entries
+                    }
                     
-                    let imagesToLoad = [...existingImages];
+                    // Fallback just in case someone deletes all images in CMS
+                    if (imagesToLoad.length === 0) {
+                        imagesToLoad = ["https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"];
+                    }
+
                     totalImages = imagesToLoad.length;
+                    galleryContainer.innerHTML = '';
+                    dotsContainer.innerHTML = '';
 
                     imagesToLoad.forEach((img, index) => {
                         const slide = document.createElement('div');
@@ -253,7 +247,6 @@
             } catch (error) { console.error("Error loading bishop data:", error); }
         }
 
-        // --- Scroll Reveal Animations ---
         document.addEventListener("DOMContentLoaded", () => {
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
