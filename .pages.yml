@@ -48,6 +48,35 @@ content:
           - name: description
             label: Short Description
             type: string
+  - name: leadership
+    label: The Bishop
+    type: file
+    path: bishop.json
+    fields:
+      - name: header_title
+        label: Header Title
+        type: string
+      - name: header_subtitle
+        label: Header Subtitle
+        type: string
+      - name: bishop_name
+        label: Bishop's Name
+        type: string
+      - name: bishop_title
+        label: Title (e.g., Senior Pastor)
+        type: string
+      - name: bio_heading
+        label: Bio Heading
+        type: string
+      - name: bio_text
+        label: Full Biography
+        type: text
+      - name: quote
+        label: Highlight Quote
+        type: text
+      - name: facebook_link
+        label: Facebook Page Link
+        type: string
   - name: events
     label: Events & Gatherings
     type: file
