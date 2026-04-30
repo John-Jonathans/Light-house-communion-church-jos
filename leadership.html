@@ -196,17 +196,15 @@
                         document.getElementById('facebook-btn').href = data.facebook_link;
                     }
 
-                    // Dynamic Slider Injector
                     let imagesToLoad = [];
                     if (data.slider_images && data.slider_images.length > 0) {
                         imagesToLoad = data.slider_images.map(item => {
                             let imgPath = item.photo;
                             if (imgPath && imgPath.startsWith('/')) imgPath = imgPath.substring(1);
                             return imgPath || '';
-                        }).filter(img => img !== ''); // Remove any empty entries
+                        }).filter(img => img !== '');
                     }
                     
-                    // Fallback just in case someone deletes all images in CMS
                     if (imagesToLoad.length === 0) {
                         imagesToLoad = ["https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"];
                     }
@@ -218,7 +216,10 @@
                     imagesToLoad.forEach((img, index) => {
                         const slide = document.createElement('div');
                         slide.className = "min-w-full h-full snap-center snap-always flex items-center justify-center bg-gray-900 shrink-0";
-                        slide.innerHTML = `<img src="${img}" class="w-full h-full object-cover" alt="Bishop Photo ${index + 1}" />`;
+                        
+                        // 🔥 I changed this specific line from 'object-cover' to 'object-contain'
+                        slide.innerHTML = `<img src="${img}" class="w-full h-full object-contain" alt="Bishop Photo ${index + 1}" />`;
+                        
                         galleryContainer.appendChild(slide);
 
                         const dot = document.createElement('div');
