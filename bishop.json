@@ -6,5 +6,11 @@
   "bio_heading": "A Mandate of Restoration.",
   "bio_text": "Welcome to Lighthouse Communion Church. Our mission is to raise a generation of power, character, and charisma.\n\nWe believe in the transformative power of the Word and the undeniable evidence of the Holy Spirit. Through dedicated teaching and compassionate outreach, we are building a legacy of faith that spans generations.",
   "quote": "My heart beats for the restoration of dignity to the body of Christ. We are not just called to gather; we are called to be a lighthouse in a dark world, providing safety, truth, and communion.",
-  "facebook_link": "#"
+  "facebook_link": "#",
+  "slider_images": [
+    { "photo": "bishop1.jpg" },
+    { "photo": "bishopfacebook.jpg" },
+    { "photo": "bishopndwife1.jpg" },
+    { "photo": "bishopndwife2.jpg" }
+  ]
 }
