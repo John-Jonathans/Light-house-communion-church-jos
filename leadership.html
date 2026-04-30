@@ -3,156 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadership - Lighthouse Communion Church</title>
+    <title>The Bishop - Lighthouse</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛪</text></svg>">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://church-jos.vercel.app/leadership.html">
-    <meta property="og:title" content="Leadership - Lighthouse Communion Church">
-    <meta property="og:description" content="Meet the visionary leaders behind the mandate. Raising a people of Power, Character, and Charisma.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1200&auto=format&fit=crop">
-
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'church-gold': '#FFD700',
-                        'church-orange': '#6B21A8',
-                        'church-dark': '#111827',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { 'church-gold': '#FFD700', 'church-orange': '#6B21A8', 'church-dark': '#111827', }, fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'], }, } } }
     </script>
-
     <style>
         html { scroll-behavior: smooth; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
         
-        /* Dot transition styles */
+        /* Your Custom Dot Styles */
         .dot { transition: all 0.3s ease; opacity: 0.5; transform: scale(0.8); }
         .dot.active { opacity: 1; transform: scale(1.2); background-color: #FFD700; }
+        
+        .quote-marks::before { content: '"'; font-size: 5rem; position: absolute; top: -20px; left: -15px; color: rgba(255, 215, 0, 0.2); font-family: serif; line-height: 1; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased font-sans flex flex-col min-h-screen">
 
-    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
+    <!-- Standard Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm py-3 transition-all">
         <div class="container mx-auto px-6 flex justify-between items-center relative z-50">
             <a href="index.html" class="flex items-center gap-3 group relative z-50 hover:scale-105 transition-transform duration-300">
                 <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-church-dark flex items-center justify-center shadow-lg transition-colors border-2 border-church-gold/30">
-                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" />
+                    <img src="logo.png" alt="Lighthouse Logo" class="w-full h-full object-cover scale-110" onerror="this.src='https://via.placeholder.com/150/111827/FFD700?text=L'" />
                 </div>
                 <span class="font-serif font-bold text-xl tracking-wide text-gray-900">Lighthouse</span>
             </a>
 
-            <div class="hidden md:flex space-x-8 items-center">
+            <div class="hidden lg:flex space-x-6 items-center">
                 <a href="index.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Home</a>
                 <a href="about.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">About Us</a>
                 <a href="leadership.html" class="text-sm font-semibold tracking-wide text-church-orange transition-colors">The Bishop</a>
                 <a href="books.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Library</a>
                 <a href="events.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Events</a>
                 <a href="blog.html" class="text-sm font-semibold tracking-wide hover:text-church-orange transition-colors text-gray-700">Blog</a>
-                <a href="#join" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-church-orange text-white hover:bg-purple-800 shadow-lg hover:shadow-xl">Give Now</a>
+                <a href="give.html" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-church-orange text-white hover:bg-purple-800 shadow-lg hover:shadow-xl">Give Now</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-gray-800 focus:outline-none p-2 z-50">
+            <button id="mobile-menu-btn" class="lg:hidden text-gray-800 focus:outline-none p-2 z-50">
                 <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
                 <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-8 animate-fade-in pt-16">
-        <a href="index.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Home</a>
-        <a href="about.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">About Us</a>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-white z-[45] flex-col justify-center items-center space-y-6 pt-16">
+        <a href="index.html" class="text-2xl font-serif font-medium text-gray-900">Home</a>
+        <a href="about.html" class="text-2xl font-serif font-medium text-gray-900">About Us</a>
         <a href="leadership.html" class="text-2xl font-serif font-medium text-church-orange">The Bishop</a>
-        <a href="books.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Library</a>
-        <a href="events.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Events</a>
-        <a href="blog.html" class="text-2xl font-serif font-medium text-gray-900 hover:text-church-orange">Blog</a>
-        <a href="#join" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
+        <a href="books.html" class="text-2xl font-serif font-medium text-gray-900">Library</a>
+        <a href="events.html" class="text-2xl font-serif font-medium text-gray-900">Events</a>
+        <a href="blog.html" class="text-2xl font-serif font-medium text-gray-900">Blog</a>
+        <a href="give.html" class="px-8 py-3 bg-church-orange text-white rounded-full font-bold text-lg mt-4 shadow-lg active:scale-95 transition-transform">Give Now</a>
     </div>
 
-    <header class="bg-church-dark pt-28 pb-12 md:pt-36 md:pb-20 relative overflow-hidden">
+    <!-- Header -->
+    <header class="bg-church-dark pt-32 pb-16 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="absolute top-0 right-0 w-64 h-64 bg-church-orange opacity-20 blur-[100px] rounded-full pointer-events-none"></div>
-        
-        <div class="container mx-auto px-6 text-center relative z-10 animate-fade-in">
-            <h1 class="text-church-gold font-serif text-3xl md:text-5xl font-bold mb-3 md:mb-6 leading-tight">Office of the Bishop</h1>
-            <p class="text-white/80 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed">Meet the visionary leaders behind the mandate.</p>
+        <div class="container mx-auto px-6 text-center relative z-10 reveal">
+            <h1 id="header-title" class="text-church-gold font-serif text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">Loading...</h1>
+            <p id="header-subtitle" class="text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-light">Loading...</p>
         </div>
     </header>
 
-    <section class="py-12 md:py-24 bg-white flex-grow">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
+    <!-- Editorial Layout -->
+    <section class="py-16 md:py-24 bg-white relative z-20 flex-grow">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
                 
-                <div class="w-full lg:w-5/12 relative lg:sticky lg:top-28 z-10">
+                <!-- Left Column: Your Custom Image Slider & Titles -->
+                <div class="w-full lg:w-5/12 reveal relative lg:sticky lg:top-28">
                     
-                    <div class="relative w-full h-[450px] lg:h-[600px] rounded-xl shadow-2xl border-4 border-gray-100 bg-gray-900 group overflow-hidden">
+                    <!-- YOUR Slider Box -->
+                    <div class="relative w-full aspect-[4/5] rounded-2xl shadow-2xl border-4 border-gray-100 bg-gray-900 group overflow-hidden mb-6">
                         <div id="gallery-container" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth h-full w-full no-scrollbar">
-                            </div>
-                        
-                        <div id="gallery-dots" class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
-                            </div>
-                    </div>
-
-                    <div class="mt-6 text-center lg:text-left bg-gray-50 p-6 rounded-lg lg:bg-transparent lg:p-0">
-                        <h3 id="leader-name" class="font-bold text-xl md:text-2xl text-church-dark">Rt. Rev. Dr. Bright Samuel Otso</h3>
-                        <p id="leader-title" class="text-church-orange font-medium text-sm md:text-base uppercase tracking-wider mb-3">General Overseer</p>
-                        
-                        <div class="flex gap-4 justify-center lg:justify-start mt-6">
-                            <button class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-semibold hover:bg-blue-700 transition shadow-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> 
-                                Follow Ministry
-                            </button>
+                            <!-- JS injects images here -->
                         </div>
+                        
+                        <div id="gallery-dots" class="absolute bottom-24 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
+                            <!-- JS injects dots here -->
+                        </div>
+
+                        <!-- Gradient for text readability -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 text-white z-20 pointer-events-none">
+                            <h2 id="bishop-name" class="font-serif text-3xl font-bold mb-1 drop-shadow-lg">Loading...</h2>
+                            <p id="bishop-title" class="text-church-gold text-sm font-bold tracking-widest uppercase">Loading...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-4">
+                        <a href="books.html" class="w-full py-4 bg-church-dark text-white rounded-xl font-bold text-center hover:bg-gray-800 transition-colors shadow-lg flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            Read Bishop's Books
+                        </a>
+                        <a id="facebook-btn" href="#" target="_blank" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-center hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                            Follow Ministry
+                        </a>
                     </div>
                 </div>
 
-                <div class="w-full lg:w-7/12 space-y-6 z-0">
-                    <h2 class="font-serif text-3xl md:text-5xl font-bold text-church-dark mb-4 leading-tight">
-                        A Mandate of <br/><span class="text-church-orange">Restoration.</span>
-                    </h2>
+                <!-- Right Column: Biography -->
+                <div class="w-full lg:w-7/12 reveal" style="transition-delay: 150ms;">
+                    <h3 id="bio-heading" class="font-serif text-3xl md:text-4xl font-bold text-church-dark mb-8 leading-tight">Loading...</h3>
                     
-                    <div id="leader-bio" class="text-gray-600 leading-relaxed text-base md:text-lg whitespace-pre-line">
-                        Loading biography...
-                    </div>
-                    
-                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl border-l-4 border-church-gold my-8 relative">
-                        <div class="absolute top-4 left-4 opacity-50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" class="text-church-gold/20"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path></svg>
-                        </div>
-                        <p class="italic text-gray-700 text-base md:text-xl relative z-10 pl-8 font-serif leading-relaxed">
-                            "My heart beats for the restoration of dignity to the body of Christ. We are not just called to gather; we are called to be a lighthouse in a dark world, providing safety, truth, and communion."
+                    <div class="relative bg-gray-50 border-l-4 border-church-gold p-8 md:p-10 rounded-r-2xl mb-10 shadow-sm quote-marks">
+                        <p id="bio-quote" class="relative z-10 font-serif text-xl md:text-2xl text-gray-800 italic leading-relaxed">
+                            Loading...
                         </p>
                     </div>
 
-                    <div class="block md:hidden mt-8 pt-8 border-t border-gray-200">
-                        <a href="books.html" class="block w-full text-center bg-church-dark text-white py-3 rounded-lg font-bold">
-                            Read Bishop's Books
-                        </a>
+                    <div id="bio-text" class="prose prose-lg text-gray-600 leading-relaxed space-y-6">
+                        Loading...
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-church-dark text-white pt-16 pb-8 border-t border-gray-800 mt-auto">
-        <div class="container mx-auto px-6 text-center text-xs md:text-sm text-gray-500">
-            <p>&copy; 2026 Lighthouse Communion Church. All rights reserved.</p>
-        </div>
+    <footer class="bg-church-dark text-white text-center py-8 mt-auto">
+        <p class="text-sm opacity-70">&copy; 2026 Lighthouse Communion Church International</p>
     </footer>
 
     <script>
@@ -163,13 +145,11 @@
         const closeIcon = document.getElementById('close-icon');
 
         mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
+            mobileMenu.classList.toggle('hidden'); mobileMenu.classList.toggle('flex');
+            menuIcon.classList.toggle('hidden'); closeIcon.classList.toggle('hidden');
         });
 
-        // --- Gallery Logic Variables ---
+        // --- Your Custom Gallery Logic Variables ---
         let currentIndex = 0;
         let autoScrollTimer;
         let isManualScrolling = false;
@@ -177,20 +157,18 @@
         const dotsContainer = document.getElementById('gallery-dots');
         let totalImages = 0;
 
-        // --- Function to update active dot ---
         function updateDots(activeIndex) {
             Array.from(dotsContainer.children).forEach((dot, index) => {
                 if (index === activeIndex) {
                     dot.classList.add('active', 'bg-church-gold');
-                    dot.classList.remove('bg-white');
+                    dot.classList.remove('bg-white/50');
                 } else {
                     dot.classList.remove('active', 'bg-church-gold');
-                    dot.classList.add('bg-white');
+                    dot.classList.add('bg-white/50');
                 }
             });
         }
 
-        // --- Function to scroll to specific slide (supports instant jump) ---
         function scrollToSlide(index, instantJump = false) {
             const width = galleryContainer.clientWidth;
             galleryContainer.scrollTo({
@@ -199,37 +177,40 @@
             });
         }
 
-        // --- Start Auto-Scroll Timer ---
         function startAutoScroll() {
             stopAutoScroll(); 
             autoScrollTimer = setInterval(() => {
                 let nextIndex = currentIndex + 1;
                 let instantJump = false;
-                
-                if (nextIndex >= totalImages) {
-                    nextIndex = 0;
-                    instantJump = true; 
-                }
-                
+                if (nextIndex >= totalImages) { nextIndex = 0; instantJump = true; }
                 scrollToSlide(nextIndex, instantJump);
             }, 4000); 
         }
 
-        function stopAutoScroll() {
-            clearInterval(autoScrollTimer);
-        }
+        function stopAutoScroll() { clearInterval(autoScrollTimer); }
 
-        // --- Fetch Dynamic Leadership Data ---
-        async function loadLeadershipData() {
+        // --- Fetch CMS Data + Your Images ---
+        async function loadBishopData() {
             try {
-                const response = await fetch('leadership.json');
+                const cacheBuster = new Date().getTime();
+                const response = await fetch('bishop.json?v=' + cacheBuster);
+                
                 if (response.ok) {
                     const data = await response.json();
                     
-                    if (data.leader_name) document.getElementById('leader-name').textContent = data.leader_name;
-                    if (data.leader_title) document.getElementById('leader-title').textContent = data.leader_title;
-                    if (data.leader_bio) document.getElementById('leader-bio').innerHTML = data.leader_bio;
-                    
+                    // Populate Text
+                    if (data.header_title) document.getElementById('header-title').textContent = data.header_title;
+                    if (data.header_subtitle) document.getElementById('header-subtitle').textContent = data.header_subtitle;
+                    if (data.bishop_name) document.getElementById('bishop-name').textContent = data.bishop_name;
+                    if (data.bishop_title) document.getElementById('bishop-title').textContent = data.bishop_title;
+                    if (data.bio_heading) document.getElementById('bio-heading').textContent = data.bio_heading;
+                    if (data.bio_text) document.getElementById('bio-text').innerHTML = data.bio_text.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>');
+                    if (data.quote) document.getElementById('bio-quote').textContent = data.quote;
+                    if (data.facebook_link && data.facebook_link !== "#") {
+                        document.getElementById('facebook-btn').href = data.facebook_link;
+                    }
+
+                    // Populate Your Slider
                     const existingImages = [
                         "bishop1.jpg",
                         "bishopfacebook.jpg",
@@ -238,13 +219,6 @@
                     ];
                     
                     let imagesToLoad = [...existingImages];
-
-                    if (data.leader_image && data.leader_image !== "") {
-                        let imgPath = data.leader_image;
-                        if (imgPath.startsWith('/')) imgPath = imgPath.substring(1);
-                        imagesToLoad.push(imgPath);
-                    }
-                    
                     totalImages = imagesToLoad.length;
 
                     imagesToLoad.forEach((img, index) => {
@@ -254,7 +228,7 @@
                         galleryContainer.appendChild(slide);
 
                         const dot = document.createElement('div');
-                        dot.className = `dot w-2.5 h-2.5 rounded-full bg-white`;
+                        dot.className = `dot w-2.5 h-2.5 rounded-full bg-white/50 shadow-md`;
                         dotsContainer.appendChild(dot);
                     });
 
@@ -268,7 +242,6 @@
                     galleryContainer.addEventListener('scroll', () => {
                         const width = galleryContainer.clientWidth;
                         const newIndex = Math.round(galleryContainer.scrollLeft / width);
-                        
                         if(newIndex !== currentIndex && newIndex >= 0 && newIndex < totalImages) {
                             currentIndex = newIndex;
                             updateDots(currentIndex);
@@ -277,12 +250,23 @@
 
                     startAutoScroll();
                 }
-            } catch (error) {
-                console.error("Error loading leadership data:", error);
-            }
+            } catch (error) { console.error("Error loading bishop data:", error); }
         }
 
-        loadLeadershipData();
+        // --- Scroll Reveal Animations ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { root: null, rootMargin: '0px', threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        });
+
+        loadBishopData();
     </script>
 </body>
 </html>
