@@ -77,6 +77,14 @@ content:
       - name: facebook_link
         label: Facebook Page Link
         type: string
+      - name: slider_images
+        label: Gallery Photos
+        type: object
+        list: true
+        fields:
+          - name: photo
+            label: Upload Photo
+            type: image
   - name: events
     label: Events & Gatherings
     type: file
